@@ -4,9 +4,8 @@ from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import check_password
 
-from user_account_api.models import PreviousPassword, CustomUser
-
 from english_words import english_words_set
+from user_account_api.models import PreviousPassword, CustomUser
 
 def ValidateEmail(email):
     validators = dict()
@@ -32,7 +31,7 @@ def ValidateDictionary(password):
 
 
 def ValidatePassword(
-    email,
+    # email,
     first_name,
     last_name,
     password,
@@ -54,21 +53,21 @@ def ValidatePassword(
         if not re.findall('[a-z]', password):
             validators['invalid_lowercase'] = 'Password must contain at least 1 lowercase letter, a-z.'
 
-        if not re.findall('[()[\]{}|\\`~!@#$%^&*_\-+=;:\'",<>./?]', password):
-            validators['invalid_special'] = 'Password must contain at least 1 special character.'
+        # if not re.findall('[()[\]{}|\\`~!@#$%^&*_\-+=;:\'",<>./?]', password):
+        #     validators['invalid_special'] = 'Password must contain at least 1 special character.'
 
-        if(len(first_name) > 0 and len(last_name) > 0):
-            if first_name.lower() in password.lower():
-                validators['invalid_firstName'] = 'Password must not contain your first name.'
+        # if(len(first_name) > 0 and len(last_name) > 0):
+        #     if first_name.lower() in password.lower():
+        #         validators['invalid_firstName'] = 'Password must not contain your first name.'
 
-            if last_name.lower() in password.lower():
-                validators['invalid_lastName'] = 'Password must not contain your last name.'
+        #     if last_name.lower() in password.lower():
+        #         validators['invalid_lastName'] = 'Password must not contain your last name.'
 
         validate_in_dictionary = ValidateDictionary(password)
 
-        if validate_in_dictionary:
-            validators['invalid_in_dictionary'] = 'Password must not contain dictionary words. (Dictionary: {})'.format(
-                validate_in_dictionary)
+        # if validate_in_dictionary:
+        #     validators['invalid_in_dictionary'] = 'Password must not contain dictionary words. (Dictionary: {})'.format(
+        #         validate_in_dictionary)
 
         return validators
     else:
@@ -77,16 +76,19 @@ def ValidatePassword(
 
 
 def ValidateRegistration(
-        email, username, first_name, last_name, middle_name,
+        username, first_name, last_name, middle_name,
+
+        # email, username, first_name, last_name, middle_name,
         password, confirm_password):
     cleaned_data = dict()
 
-    validate_email = ValidateEmail(email)
+    # validate_email = ValidateEmail(email)
 
     validate_password = ValidatePassword(
-        email, first_name, last_name, password, confirm_password)
+        first_name, last_name, password, confirm_password)
+            # email, first_name, last_name, password, confirm_password)
 
-    cleaned_data.update(validate_email)
+    # cleaned_data.update(validate_email)
     cleaned_data.update(validate_password)
 
     return cleaned_data

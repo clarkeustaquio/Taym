@@ -56,3 +56,16 @@ input[type=password]::-ms-clear
 {
     display: none;
 }
+
+/* Table */
+table th {
+  text-align: center;
+  /* background-color: #d9534f; */
+  /* background-color: #1d3355; */
+  background-color: #f7f7f7;
+  /* color: whitesmoke; */
+  color: black
+}
+table tr {
+  text-align: center;
+}

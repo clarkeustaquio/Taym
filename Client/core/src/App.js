@@ -8,7 +8,7 @@ import ForgotPasswordHelper from './components/_helper/forgot_password_helper'
 import ResetPasswordHelper from './components/_helper/reset_password_helper'
 import ChangePasswordHelper from './components/_helper/change_password_helper'
 import ActivatedHelper from './components/_helper/activated_helper'
-
+import ChildHelper from './components/_helper/child_helper'
 import MainHelper from './components/main'
 
 // Reducer
@@ -41,7 +41,7 @@ function App() {
   }, [state.isMobile, state.width])
   
   React.useEffect(() => {
-    document.title = 'KMLNGMLKS Corp.'
+    document.title = 'Taym'
   })
   return (
     <React.Fragment> 
@@ -78,6 +78,10 @@ function App() {
 
             <Route path='/account-activated/:uid/:token'>
               <ActivatedHelper />
+            </Route>
+
+            <Route path='/child-activated/:uid/:token'>
+              <ChildHelper />
             </Route>
 
             <Route path="*">

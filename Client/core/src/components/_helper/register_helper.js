@@ -12,7 +12,7 @@ function RegisterHelper(){
             :<div id="root">
                 <NavbarComponent />
                 <RegisterComponent />
-                <WaveComponent />
+                {/* <WaveComponent /> */}
             </div>
             }
         </React.Fragment>

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -33,6 +34,8 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # Apps
     'user_account_api',
+    'task_manager',
+    'subject',
 
     # Installed
     'rest_framework',
@@ -117,7 +120,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+# TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Manila'
 
 USE_I18N = True
 
@@ -136,9 +140,41 @@ EMAIL_HOST_USER = 'd7f53ddf8061b4'
 EMAIL_HOST_PASSWORD = '089f8bb6ceab1a'
 EMAIL_PORT = '2525'
 
+# CSRF_COOKIE_SECURE = True
+# CSRF_USE_SESSIONS = True
+
+# SESSION_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = True
+
 # Cors
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "htt://localhost:8080"
-]
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+if os.environ.get('DEBUG') == 'True':
+    DEBUG = True
+elif os.environ.get('DEBUG') == 'False':
+    DEBUG = False
+
+import django_heroku
+django_heroku.settings(locals())
+# FrillesCaranza
+# user: admin_taym
+# password: admin_taym

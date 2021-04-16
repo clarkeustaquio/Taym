@@ -59,7 +59,7 @@ function ChangePasswordComponent(){
                     confirm_password: state.confirm_password
                 })
             }
-            fetch('http://localhost:8000/api/change-password/', change_password_request)
+            fetch('https://taym.herokuapp.com/api/change-password/', change_password_request)
             .then( response => {
                 if(response.ok){
                     return response.json()

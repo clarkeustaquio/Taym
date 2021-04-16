@@ -3,6 +3,34 @@ import React from 'react'
 function WaveComponent(){
     return (
         <React.Fragment>
+                {/* <footer className="mt-auto container-fluid">
+                    <div className="container text-center text-md-left">
+                        <div className="row mt-3">
+                            
+                            <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4 text-white mt-5">
+                                <h6 className="text-uppercase font-weight-bold">Cinema</h6>
+                                <hr className="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style={{width: 60}} />
+                                <p>Enjoy the latest international & local films with your family & friends at Cinema!</p>
+                            </div>
+
+                            <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4 text-white mt-5">
+                                <h6 className="text-uppercase font-weight-bold">Contact</h6>
+                                <hr className="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style={{width: 60}} />
+                                <p className="text-white">+63123123123</p>
+                                <p className="text-white">cinema@cinema.com</p>
+                            </div>
+                            <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4 text-white mt-5">
+                                <h6 className="text-uppercase font-weight-bold">Developers</h6>
+                                <hr className="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style={{width: 60}} />
+                                <p><a className="text-white" href="{% url 'api:movie_api' %}">Movies API</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div className="text-center mb-4">© 2021 Copyright:
+                        <a className="text-white" href="#"> Taym</a>
+                    </div>
+                </footer> */}
             <div className="mt-auto">
                 <svg viewBox="0 0 1440 320">
                     <path fill="#5cb85c" 

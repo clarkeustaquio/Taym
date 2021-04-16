@@ -12,6 +12,7 @@ urlpatterns = [
     path('login/', CustomAuthToken.as_view()),
     path('logout/', views.logout, name='logout'),
     path('register/', views.api_create_account, name='create_account'),
+    path('register-parent/', views.create_parent_account, name='create_parent_account'),
     path('reset-password/', views.reset_password, name='reset_password'),
 
     path('validate-change-token/', ChangePasswordToken.as_view(), name='validate_change_token'),
@@ -23,6 +24,7 @@ urlpatterns = [
 
     # Email Activation
     path('activate-account/', views.activate_account, name='activate_account'),
+    path('activate-child/', views.activate_child, name='activate_child'),
 
     # Change Email and Password
     path('change-email/', views.change_email, name='change_email'),

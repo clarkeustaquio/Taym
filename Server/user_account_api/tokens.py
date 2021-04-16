@@ -41,33 +41,40 @@ class CustomAuthToken(ObtainAuthToken):
             user.attempts = 4
             user.save()
 
+            print('Hello')
             if user.is_lock == None:
+                print('Here')
                 return Response({
                     'status': 'OK',
                     'username': user.username,
                     'token': token.key,
-                    'email': user.email,
                     'first_name': user.first_name,
                     'last_name': user.last_name,
                     'is_expired': True if is_expired == 0 else False,
+                    'is_parent': user.is_parent,
+                    'is_admin': user.is_staff,
                 }, status=status.HTTP_200_OK)
             else:
+                print('NO')
                 if date_now >= user.is_lock:
                     return Response({
                         'status': 'OK',
                         'username': user.username,
                         'token': token.key,
-                        'email': user.email,
                         'first_name': user.first_name,
                         'last_name': user.last_name,
                         'is_expired': True if is_expired == 0 else False,
+                        'is_parent': user.is_parent,
+                        'is_admin': user.is_staff,
                     }, status=status.HTTP_200_OK)
                 else:
+                    print('GG')
                     return Response({'status': 'BAD',
                         'message': '''You have exceeded the limit for invalid password attempt. 
                         Your account will be temporarily locked for 5 minutes.'''},
                         status=status.HTTP_200_OK)
         except Exception as e:
+            print(e)
             try:
                 user = CustomUser.objects.get(username=request.data['username'])
             except CustomUser.DoesNotExist as e:
@@ -110,6 +117,7 @@ class CustomAuthToken(ObtainAuthToken):
                 else:
                     return Response({'status': 'BAD', 
                         'message': 'Your account has not been activated.'}, status=status.HTTP_200_OK)
+
 class ChangePasswordToken(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,

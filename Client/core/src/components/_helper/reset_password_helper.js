@@ -55,7 +55,7 @@ function ResetPasswordHelper(){
                 ?<div>
                     <NavbarComponent />
                     <ResetPasswordComponent />
-                    <WaveComponent />
+                    {/* <WaveComponent /> */}
                 </div>
                 : <CircularProgress size={50} style={{
                     position: "fixed",

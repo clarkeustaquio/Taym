@@ -4,7 +4,7 @@ from django.template.loader import render_to_string
 
 def password_expiration(email_to, name, day):
     try:
-        subject = 'KMLNGMLKS Corp.'
+        subject = 'Tracer'
         message = 'Your password will expire in ' + day
         email_from = settings.EMAIL_HOST_USER
         email_to = [email_to]

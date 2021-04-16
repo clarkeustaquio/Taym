@@ -7,8 +7,13 @@ name = "pypi"
 django = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
+english-words = "*"
+gunicorn = "*"
+django-heroku = "*"
+psycopg2 = "*"
+certifi = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.9"
+python_version = "3.8.5"

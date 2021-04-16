@@ -8,7 +8,7 @@ from user_account_api.tokens import account_activation_token
 
 def account_activation(email_to, name, user_pk, user):
     try:
-        subject = 'KMLNGMLKS Corp.'
+        subject = 'Tracer'
         message = 'Activate your account'
         email_from = settings.EMAIL_HOST_USER
         email_to = [email_to]

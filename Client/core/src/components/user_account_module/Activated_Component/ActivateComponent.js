@@ -50,7 +50,7 @@ function ActivatedComponent(){
                 <p className="text-muted lead">You can now login with the username and password you provided when you signed up.</p>
                 <Link to='/'>
                     <Button type="submit" variant="success" size="md" >
-                    KMLNGMLKS Corp.
+                    Taym
                     </Button>
                 </Link>
             </div>

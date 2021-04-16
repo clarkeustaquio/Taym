@@ -27,7 +27,7 @@ function ChangePasswordHelper(){
             if(!token){
                 history.push('/login')
             }else{
-                fetch('http://localhost:8000/api/authorize-token/', validate_token)
+                fetch('https://taym.herokuapp.com/api/authorize-token/', validate_token)
                 .then((response) => {
                     if(response.status === 200){
                         setAuth(true)
@@ -50,7 +50,7 @@ function ChangePasswordHelper(){
             {isAuth  === true
             ?<div><NavbarComponent />
                 <ChangePasswordComponent />
-                <WaveComponent />
+                {/* <WaveComponent /> */}
             </div>
             :null}
             

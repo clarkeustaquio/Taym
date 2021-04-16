@@ -14,7 +14,7 @@ function ActivatedHelper(){
             : <div id="root">
                 <NavbarComponent />
                 <ActivatedComponent />
-                <WaveComponent />
+                {/* <WaveComponent /> */}
             </div>
             }
         </React.Fragment>

@@ -52,7 +52,7 @@ function ChangeEmailComponent(){
                 })
             }
             
-            fetch('http://localhost:8000/api/change-email/', change_email_request)
+            fetch('https://taym.herokuapp.com/api/change-email/', change_email_request)
             .then( response => {
                 if(response.ok){
                     return response.json()

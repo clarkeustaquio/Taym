@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Col, Button, Alert, InputGroup } from 'react-bootstrap'
+import { Container, Form, Col, Button, Alert, InputGroup, Dropdown, Row, DropdownButton } from 'react-bootstrap'
 import { Link, Redirect, useHistory, useParams } from 'react-router-dom'
 
 import { CircularProgress, Input } from '@material-ui/core'
@@ -29,13 +29,14 @@ import PrivacyPolicyComponent from '../Privacy_Policy_Component/PrivacyPolicyCom
 // Url
 import { registration_request_url, registration_get_request_url } from '../../../static/api_request_urls'
 
-function FormComponent({ setStatus }){
+function FormComponent({ setStatus, setIsProceed }){
     const history = useHistory()
     const state = useSelector(state => state.RegistrationReducer)
     const dispatch = useDispatch()
 
     const [viewPassword, setViewPassword] = React.useState(false)
     const [viewConfirmPassword, setViewConfirmPassword] = React.useState(false)
+    const [studentNumber, setStudentNumber] = React.useState('')
 
     const [modalShow, setModalShow] = React.useState(false)
 
@@ -61,8 +62,9 @@ function FormComponent({ setStatus }){
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    email: state.email,
+                    // email: state.email,
                     username: state.username,
+                    student_no: studentNumber,
                     first_name: state.first_name,
                     last_name: state.last_name,
                     middle_name: state.middle_name,
@@ -147,149 +149,174 @@ function FormComponent({ setStatus }){
                     : null }
                 </div> 
                 : null
-            }
-            
-            <Form noValidate validated={state.validated_form} onSubmit={handleSubmit}>
-                <Form.Group controlId="emailForm">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control 
-                        name="email"
-                        type="email" 
-                        placeholder="Email address" 
-                        value={state.email} 
-                        onChange={handleInput}
-                        required
-                    />
-
-                    <Form.Text className="text-muted">
-                    We'll never share your email with anyone else.
-                    </Form.Text>
-                    
-                </Form.Group>
-
-                <Form.Group controlId="username">
-                    <Form.Row>
-                        <Col>
+            }           
+                {/* <DropdownButton
+                        className="mb-4"
+                        variant="success"
+                        title="Register As"
+                        id="input-group-dropdown-1"
+                    >
+                    <Dropdown.Item href="#">Student</Dropdown.Item>
+                    <Dropdown.Item href="#">Parent</Dropdown.Item>
+                </DropdownButton> */}
+              
+                <Form noValidate validated={state.validated_form} onSubmit={handleSubmit}>
+                        {/* <Form.Group controlId="emailForm">
+                            <Form.Label>Email address</Form.Label>
                             <Form.Control 
-                                name="username"
-                                type="text" 
-                                placeholder="Username" 
-                                value={state.username}
+                                name="email"
+                                type="email" 
+                                placeholder="Email address" 
+                                value={state.email} 
                                 onChange={handleInput}
                                 required
                             />
-                        </Col>
-                    </Form.Row>
-                    
-                </Form.Group>
 
-                <Form.Group>
-                    <Form.Row>
-                        <Col>
-                            <Form.Control 
-                                name="first_name"
-                                type="text" 
-                                placeholder="First name" 
-                                value={state.first_name}
-                                onChange={handleInput}
-                                required
-                            />
-                        </Col>
-                        <Col>
-                            <Form.Control 
-                                name="last_name"
-                                type="text" 
-                                placeholder="Last name" 
-                                value={state.last_name}
-                                onChange={handleInput}
-                                required
-                            />
-                        </Col>
-                        <Col>
-                            <Form.Control 
-                                name="middle_name"
-                                type="text" 
-                                placeholder="Middle name" 
-                                value={state.middle_name}
-                                onChange={handleInput}
-                                required
-                            />
-                        </Col>
-                    </Form.Row>
-                </Form.Group>
-                
-                <Form.Group>
-                    <Form.Label>Password</Form.Label>
-                    <InputGroup>
-                        <Form.Control 
-                            name="password"
-                            type={viewPassword === true ? "text" : "password" }
-                            placeholder="Password" 
-                            autoComplete="on"
-                            value={state.password}
-                            onChange={handleInput}
-                            required
-                        />
-                        <InputGroup.Append>
-                            <InputGroup.Text type="button" style={{ backgroundColor: 'white'}} onClick={() => setViewPassword(!viewPassword)}>
-                                {viewPassword === true 
-                                    ? <VisibilityOffIcon />
-                                    : <VisibilityIcon />
-                                }
-                            </InputGroup.Text>
-                        </InputGroup.Append>
-                    </InputGroup>
-                    <Form.Text className="text-muted">
-                    Your password must be at least (10) characters long,
-                    which consist of at least (1) uppercase letter, 1 lowercase letter, 
-                    1 number and 1 special character.
-                    </Form.Text>
-                </Form.Group>
+                            <Form.Text className="text-muted">
+                            We'll never share your email with anyone else.
+                            </Form.Text>
+                            
+                        </Form.Group> */}
+
+                        <Form.Group controlId="username">
+                            <Form.Row>
+                                <Col>
+                                    <Form.Control 
+                                        name="username"
+                                        type="text" 
+                                        placeholder="Username" 
+                                        value={state.username}
+                                        onChange={handleInput}
+                                        required
+                                    />
+                                </Col>
+                                <Col>
+                                    <Form.Control 
+                                        name="student_number"
+                                        type="text" 
+                                        placeholder="Student Number" 
+                                        value={studentNumber}
+                                        onChange={(event) => {
+                                                const re = /^[0-9\b]+$/;
+                                            
+                                                if (event.target.value === '' || re.test(event.target.value)) {
+                                                   setStudentNumber(event.target.value)
+                                                }
+                                        }}
+                                        required
+                                    />
+                                </Col>
+                            </Form.Row>
+                            
+                        </Form.Group>
+
+                        <Form.Group>
+                            <Form.Row>
+                                <Col>
+                                    <Form.Control 
+                                        name="first_name"
+                                        type="text" 
+                                        placeholder="First name" 
+                                        value={state.first_name}
+                                        onChange={handleInput}
+                                        required
+                                    />
+                                </Col>
+                                <Col>
+                                    <Form.Control 
+                                        name="last_name"
+                                        type="text" 
+                                        placeholder="Last name" 
+                                        value={state.last_name}
+                                        onChange={handleInput}
+                                        required
+                                    />
+                                </Col>
+                                <Col>
+                                    <Form.Control 
+                                        name="middle_name"
+                                        type="text" 
+                                        placeholder="Middle name" 
+                                        value={state.middle_name}
+                                        onChange={handleInput}
+                                        required
+                                    />
+                                </Col>
+                            </Form.Row>
+                        </Form.Group>
+                        
+                        <Form.Group>
+                            <Form.Label>Password</Form.Label>
+                            <InputGroup>
+                                <Form.Control 
+                                    name="password"
+                                    type={viewPassword === true ? "text" : "password" }
+                                    placeholder="Password" 
+                                    autoComplete="on"
+                                    value={state.password}
+                                    onChange={handleInput}
+                                    required
+                                />
+                                <InputGroup.Append>
+                                    <InputGroup.Text type="button" style={{ backgroundColor: 'white'}} onClick={() => setViewPassword(!viewPassword)}>
+                                        {viewPassword === true 
+                                            ? <VisibilityOffIcon />
+                                            : <VisibilityIcon />
+                                        }
+                                    </InputGroup.Text>
+                                </InputGroup.Append>
+                            </InputGroup>
+                            <Form.Text className="text-muted">
+                            Your password must be at least (10) characters long,
+                            which consist of at least (1) uppercase letter, 1 lowercase letter, 
+                            1 number and 1 special character.
+                            </Form.Text>
+                        </Form.Group>
 
 
 
-                <Form.Group>
-                    <Form.Label>Confirm Password</Form.Label>
-                    <InputGroup>
-                        <Form.Control 
-                            name="confirm_password"
-                            type={viewConfirmPassword === true ? "text" : "password" }
-                            placeholder="Confirm Password" 
-                            autoComplete="on"
-                            value={state.confirm_password}
-                            onChange={handleInput}
-                            required
-                        />
-                        <InputGroup.Append>
-                            <InputGroup.Text type="button" style={{ backgroundColor: 'white'}} onClick={() => setViewConfirmPassword(!viewConfirmPassword)}>
-                                {viewConfirmPassword === true 
-                                    ? <VisibilityOffIcon />
-                                    : <VisibilityIcon />
-                                }
-                            </InputGroup.Text>
-                        </InputGroup.Append>
-                    </InputGroup>
-                    <Form.Control.Feedback type="invalid">Please make sure your password match.</Form.Control.Feedback>
-                </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Confirm Password</Form.Label>
+                            <InputGroup>
+                                <Form.Control 
+                                    name="confirm_password"
+                                    type={viewConfirmPassword === true ? "text" : "password" }
+                                    placeholder="Confirm Password" 
+                                    autoComplete="on"
+                                    value={state.confirm_password}
+                                    onChange={handleInput}
+                                    required
+                                />
+                                <InputGroup.Append>
+                                    <InputGroup.Text type="button" style={{ backgroundColor: 'white'}} onClick={() => setViewConfirmPassword(!viewConfirmPassword)}>
+                                        {viewConfirmPassword === true 
+                                            ? <VisibilityOffIcon />
+                                            : <VisibilityIcon />
+                                        }
+                                    </InputGroup.Text>
+                                </InputGroup.Append>
+                            </InputGroup>
+                            <Form.Control.Feedback type="invalid">Please make sure your password match.</Form.Control.Feedback>
+                        </Form.Group>
 
 
-                <Form.Group controlId="checkboxForm">
-                    <Form.Row>
-                    <Form.Check name="privacy_policy" type="checkbox" label="I Accept this sites " required/>
-                    <span className="ml-n2 btn btn-link mt-n2" onClick={() => setModalShow(true)}>Privacy policy.</span>
-                    </Form.Row>
-                    
-                </Form.Group>
-                <Button type="submit" className="float-right m-1" variant="success" size="md" disabled={state.isLoading}>
-                    {state.isLoading ? <div>Loading <CircularProgress size={25} className="ml-2 float-right" /></div> : <div>Submit</div>}
-                </Button>
-                <Link to='/login'>
-                    <Button className="float-right m-1" variant="danger" size="md">
-                        Cancel
-                    </Button>
-                </Link> 
-            </Form>
-            <PrivacyPolicyComponent modalShow={modalShow} setModalShow={setModalShow}/>
+                        <Form.Group controlId="checkboxForm">
+                            {/* <Form.Row>
+                            <Form.Check name="privacy_policy" type="checkbox" label="I Accept this sites " required/>
+                            <span className="ml-n2 btn btn-link mt-n2" onClick={() => setModalShow(true)}>Privacy policy.</span>
+                            </Form.Row> */}
+                            
+                        </Form.Group>
+                        <Button type="submit" className="float-right m-1" variant="success" size="md" disabled={state.isLoading}>
+                            {state.isLoading ? <div>Loading <CircularProgress size={25} className="ml-2 float-right" /></div> : <div>Submit</div>}
+                        </Button>
+                        {/* <Link to='/login'> */}
+                            <Button onClick={() => setIsProceed(false)} className="float-right m-1" variant="danger" size="md">
+                                Cancel
+                            </Button>
+                        {/* </Link>  */}
+                    </Form>
+                    <PrivacyPolicyComponent modalShow={modalShow} setModalShow={setModalShow}/>
         </React.Fragment>
     )
 }

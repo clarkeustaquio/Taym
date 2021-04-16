@@ -14,7 +14,7 @@ function ForgotPasswordHelper(){
             :<div id="root">
                 <NavbarComponent />
                 <ForgotPasswordComponent />
-                <WaveComponent />
+                {/* <WaveComponent /> */}
             </div>
             }
         </React.Fragment>
