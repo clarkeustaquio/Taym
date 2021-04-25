@@ -36,12 +36,18 @@ function HomeComponent(){
     const [subject, setSubject] = useState([])
     const [subjectID, setSubjectID] = useState(-1)
 
+
+    const [remark, setRemark] = useState('')
+
     useEffect(() => {
         document.title = 'Home'
     })
 
+    const domain = 'http://localhost:8000/'
+    const remote = 'https://taym.herokuapp.com/'
+
     useEffect(() => {
-        axios.get('https://taym.herokuapp.com/api/subject/', {
+        axios.get(`${domain}api/subject/`, {
             headers: {
                 'Authorization': 'Token ' + token
             }
@@ -59,7 +65,7 @@ function HomeComponent(){
     }, [])
 
     useEffect(() => {
-        axios.get('https://taym.herokuapp.com/api/get-time/',{
+        axios.get(`${domain}api/get-time/`,{
             headers: {
                 'Authorization': 'Token ' + token
             }
@@ -94,7 +100,7 @@ function HomeComponent(){
     }, [])
 
     useEffect(() => {
-        axios.get('https://taym.herokuapp.com/api/get-task/', {
+        axios.get(`${domain}api/get-task/`, {
             headers: {
                 'Authorization': 'Token ' + token
             }
@@ -141,7 +147,7 @@ function HomeComponent(){
         if(workName.length === 0){
             setValidated(true)
         }else{
-            axios.post('https://taym.herokuapp.com/api/task-manager/', {
+            axios.post(`${domain}api/task-manager/`, {
                 start_date: moment(),
                 task_name: workName,
                 subject_id: subjectID,
@@ -162,42 +168,54 @@ function HomeComponent(){
         }
     }
 
-    const handleStop = () => {
-
-        if(workName.length > 0){
-            axios.post('https://taym.herokuapp.com/api/stop-task/',
-            {
-                task_name: workName
-            }, {
-                headers: {
-                    'Authorization': 'Token ' + token
-                }
-            }).then(response => {
-                if(response.statusText === 'OK'){
-                    
-                    setTodayHistory(response.data.today_history)
-                    setWeekHistory(response.data.week_history)
-                    setWorkName('')
-            
-                    setSecond(0)
-                    setMinute(0)
-                    setHour(0)
-                    
-                    setIsWorking(false)
-                    setValidated(false)
-                    setWorkName(response.data.subjects[0].subject)
-                    setEndShow(false)
-                }
-            }).catch((error) => {
-                throw new Error('Server Refused. Try again later.')
-            })
-        }else{
-            setValidated(true)
+    const handleStop = (event) => {
+        const form = event.currentTarget
+        if(form.checkValidity() === false){
+            event.preventDefault()
+            event.stopPropagation()
+        }else if(form.checkValidity() === true){
+            event.preventDefault()
+            event.stopPropagation()
+            if(workName.length > 0){
+                axios.post(`${domain}api/stop-task/`,
+                {
+                    task_name: workName,
+                    task_remark: remark
+                }, {
+                    headers: {
+                        'Authorization': 'Token ' + token
+                    }
+                }).then(response => {
+                    if(response.statusText === 'OK'){
+                        
+                        setTodayHistory(response.data.today_history)
+                        setWeekHistory(response.data.week_history)
+                        setWorkName('')
+                
+                        setSecond(0)
+                        setMinute(0)
+                        setHour(0)
+                        
+                        setIsWorking(false)
+                        setValidated(false)
+                        setWorkName(response.data.subjects[0].subject)
+                        setEndShow(false)
+                        setRemark(false)
+                        setValidateForm(false)
+                    }
+                }).catch((error) => {
+                    throw new Error('Server Refused. Try again later.')
+                })
+            }else{
+                setValidated(true)
+            }
         }
+
+        setValidateForm(true)
     }
 
     const handleDeleteTask = () => {
-        axios.delete('https://taym.herokuapp.com/api/delete-task/', {
+        axios.delete(`${domain}api/delete-task/`, {
             data: {
                 task_id: subjectID
             },
@@ -210,6 +228,7 @@ function HomeComponent(){
                 setWeekHistory(response.data.week_history)
                 setAllHistory(response.data.all_history)
                 setDeleteShow(false)
+                setSubjectID(subject[0].id)
             }
         }).catch((error) => {
             throw new Error('Server Refused. Try again later.')
@@ -237,6 +256,9 @@ function HomeComponent(){
         // setSubjectName(subject)
         // setSubjectID(id)
     }  
+
+
+    const [validateForm, setValidateForm] = useState(false)
 
     // <div>
     //             {childData.map((child, index) => {
@@ -316,32 +338,39 @@ function HomeComponent(){
                             <span className="h6 font-weight-bold text-muted">Today</span>
                             <hr></hr>
                         </div>
+                        <div style={{
+                            overflowX: 'scroll',
+                            whiteSpace: 'nowrap'
+                        }}>
                         <Table striped bordered hover>
-                            <thead>
-                                <tr>
-                                    <th>Task</th>
-                                    <th>Start Time</th>
-                                    <th>End Time</th>
-                                    <th>Time Spent</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {todayHistory.map((item, index) => {
-                                    return (
-                                        <tr key={index}>
-                                            <td>{item.task}</td>
-                                            <td>{item.start_date}</td>
-                                            <td>{item.end_date}</td>
-                                            <td>{item.time_spent}</td>
-                                            <td>
-                                                <Button onClick={() => handleDeleteShow(item.id, item.task)} block variant="danger" block>Delete</Button>
-                                            </td>
-                                        </tr>
-                                    )
-                                })}
-                            </tbody>
-                        </Table>
+                                <thead>
+                                    <tr>
+                                        <th>Task</th>
+                                        <th>Start Time</th>
+                                        <th>End Time</th>
+                                        <th>Time Spent</th>
+                                        <th>Task Remark</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {todayHistory.map((item, index) => {
+                                        return (
+                                            <tr key={index}>
+                                                <td>{item.task}</td>
+                                                <td>{item.start_date}</td>
+                                                <td>{item.end_date}</td>
+                                                <td>{item.time_spent}</td>
+                                                <td>{item.task_remark}</td>
+                                                <td>
+                                                    <Button onClick={() => handleDeleteShow(item.id, item.task)} block variant="danger" block>Delete</Button>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })}
+                                </tbody>
+                            </Table>
+                        </div>
                     </div>
                     }
                 </div>
@@ -367,20 +396,26 @@ function HomeComponent(){
             </Modal>
 
             <Modal centered show={endShow} onHide={handleEndClose}>
-                <Modal.Header closeButton>
-                <Modal.Title>End Task</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                     Are you sure you want to end <b>{workName}</b>?
-                </Modal.Body>
-                <Modal.Footer>
-                <Button variant="danger" onClick={handleEndClose}>
-                    No
-                </Button>
-                <Button variant="success" onClick={handleStop}>
-                    Yes
-                </Button>
-                </Modal.Footer>
+                <Form noValidate validated={validateForm} onSubmit={handleStop}>
+                    <Modal.Header closeButton>
+                    <Modal.Title>End Task</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p className="text-center">Are you sure you want to end <b>{workName}</b>?</p>
+                        <Form.Group className="mt-4 text-center">
+                            <Form.Label><b>Task Remark</b></Form.Label>
+                            <Form.Control maxLength="35" onChange={(event) => setRemark(event.target.value)} type="text" placeholder="Enter remark" required/>
+                        </Form.Group>
+                    </Modal.Body>
+                    <Modal.Footer>
+                    <Button variant="danger" onClick={handleEndClose}>
+                        No
+                    </Button>
+                    <Button type="submit" variant="success">
+                        Yes
+                    </Button>
+                    </Modal.Footer>
+                </Form>
             </Modal>
 
             <Modal centered show={deleteShow} onHide={handleDeleteClose}>
@@ -392,10 +427,10 @@ function HomeComponent(){
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="success"onClick={handleDeleteClose}>
-                    Cancel
+                    CANCEL
                 </Button>
                 <Button variant="danger" onClick={handleDeleteTask}>
-                    Delete Task
+                    OK
                 </Button>
                 </Modal.Footer>
             </Modal>

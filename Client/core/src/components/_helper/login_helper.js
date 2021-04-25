@@ -13,7 +13,7 @@ function LoginHelper(){
             :<div id="root">
                 <NavbarComponent />
                 <LoginComponent />
-                {/* <WaveComponent /> */}
+                <WaveComponent />
             </div>
             }
         </React.Fragment>

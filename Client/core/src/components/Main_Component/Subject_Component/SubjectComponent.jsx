@@ -10,8 +10,11 @@ function SubjectComponent(){
         document.title = 'Subject'
     }, [])
 
+    const domain = 'http://localhost:8000/'
+    const remote = 'https://taym.herokuapp.com/'
+
     useEffect(() => {
-        axios.get('https://taym.herokuapp.com/api/subject/', {
+        axios.get(`${domain}api/subject/`, {
             headers: {
                 'Authorization': 'Token ' + token
             }
@@ -51,7 +54,7 @@ function SubjectComponent(){
 
     const handleDeleteSubject = () => {
         setIsRequest(true)
-        axios.delete('https://taym.herokuapp.com/api/subject/', {
+        axios.delete(`${domain}api/subject/`, {
             data: {
                 subject_name: subjectName,
                 subject_id: subjectID,
@@ -73,7 +76,7 @@ function SubjectComponent(){
 
     const handleEditSubject = () => {
         setIsRequest(true)
-        axios.put('https://taym.herokuapp.com/api/subject/', {
+        axios.put(`${domain}api/subject/`, {
             subject_name: subjectName,
             subject_id: subjectID
         }, {
@@ -94,7 +97,7 @@ function SubjectComponent(){
 
     const handleAddSubject = () => {
         setIsRequest(true)
-        axios.post('https://taym.herokuapp.com/api/subject/', {
+        axios.post(`${domain}api/subject/`, {
             subject: subjectName
         }, {
             headers: {
@@ -140,10 +143,10 @@ function SubjectComponent(){
                                             <td>
                                                 <div className="row">
                                                     <div className="col">
-                                                        <Button onClick={() => handleEditShow(item.id, item.subject)} className="mr-n5" variant="success" block>Edit</Button>
+                                                        <Button onClick={() => handleEditShow(item.id, item.subject)} variant="success" block>Edit</Button>
                                                     </div>
                                                     <div className="col">
-                                                        <Button onClick={() => handleDeleteShow(item.id, item.subject)} className="mr-n5" variant="danger" block>Delete</Button>
+                                                        <Button onClick={() => handleDeleteShow(item.id, item.subject)} variant="danger" block>Delete</Button>
                                                     </div>
                                                 </div>
                                                 
@@ -171,10 +174,10 @@ function SubjectComponent(){
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="danger" onClick={handleClose}>
-                    Cancel
+                    CANCEL
                 </Button>
                 <Button disabled={isRequest} variant="success" onClick={handleAddSubject}>
-                    Add Subject
+                    OK
                 </Button>
                 </Modal.Footer>
             </Modal>
@@ -194,10 +197,10 @@ function SubjectComponent(){
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="danger" onClick={handleEditClose}>
-                    Cancel
+                    CANCEL
                 </Button>
                 <Button disabled={isRequest} variant="success" onClick={handleEditSubject}>
-                    Edit Subject
+                    OK
                 </Button>
                 </Modal.Footer>
             </Modal>
@@ -211,10 +214,10 @@ function SubjectComponent(){
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="success" onClick={handleDeleteClose}>
-                    Cancel
+                    CANCEL
                 </Button>
                 <Button disabled={isRequest} variant="danger"onClick={handleDeleteSubject}>
-                    Delete Subject
+                    OK
                 </Button>
                 </Modal.Footer>
             </Modal>

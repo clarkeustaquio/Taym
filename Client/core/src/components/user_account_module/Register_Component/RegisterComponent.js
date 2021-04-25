@@ -92,36 +92,7 @@ function RegisterComponent(){
                     }
             </div>
             }
-       
-     
-{/* 
-                <div class="d-flex align-items-center">
-                    <div class="container text-center">
-                     <div className={margin}>
-                        {isProceed === false 
-                        ? <div>
-                            <h2 className="featurette-heading font-weight-bold">Registration</h2>
-                            <div>
-                                <Col>
-                                    <Row>
-                                        
-                                    </Row>
-                                    <Row className="mt-3">
-                                        
-                                    </Row>
-                                </Col>
-                            </div>
-                        </div>
-                        : <div>
-                            
-                        </div>
-                        }
-                    </div>
-                    </div>
-                </div> */}
-            </Container>
-
-                      
+            </Container>         
         </React.Fragment>
     )
 }

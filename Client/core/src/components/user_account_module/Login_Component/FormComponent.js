@@ -1,5 +1,5 @@
-import React from 'react'
-import { InputGroup, Form, FormControl, Alert, Button } from 'react-bootstrap';
+import React, { useState } from 'react'
+import { InputGroup, Form, FormControl, Alert, Button, Modal, Row, Col, Container } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom'
 import { CircularProgress } from '@material-ui/core';
 
@@ -10,6 +10,10 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
 import PersonIcon from '@material-ui/icons/Person';
+
+import StudentComponent from '../Register_Component/FormComponent'
+import ParentComponent from '../Register_Component/ParentComponent'
+import new_era from '../../../assets/user_account/new_era_logo.png'
 
 // Redux
 import { useSelector, useDispatch } from 'react-redux'
@@ -166,6 +170,17 @@ function FormComponent(){
         }
         dispatch(setFormValid(true))
     }
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+    const [status, setStatus] = React.useState(false)
+    // ============================================
+    const [parentShow, setParentShow] = useState(false);
+    const handleParentClose = () => setParentShow(false);
+    const handleParentShow = () => setParentShow(true);
+    const [parentStatus, setParentStatus] = React.useState(false)
+
     return (
         <React.Fragment>
             {state.isAlert ? <Alert variant="danger" onClose={() => dispatch(setAlert(false))} dismissible>
@@ -217,7 +232,94 @@ function FormComponent(){
                 <Button className="mt-4" type="submit" variant="success" size="lg" block disabled={state.isLoading}>
                     {state.isLoading ? <CircularProgress size={25} /> : <div>LOGIN</div> }
                 </Button>
+                <div className="text-center mt-3">
+                    <p className="mb-n2"><b>Register As</b></p>
+                    <hr style={{
+                        borderTop: "1px solid black"
+                    }}/>
+                </div>
+               
+                <Row className="mt-3">
+                    <Col>
+                        <Button onClick={handleShow} variant="success" size="lg" block>
+                        STUDENT
+                    </Button>
+                    </Col>
+                    <Col>
+                        <Button onClick={handleParentShow} variant="success" size="lg" block>
+                        PARENT
+                    </Button>
+                    </Col>
+                </Row>
+               
+               
             </Form>
+
+            <Modal 
+                size="lg"
+                centered
+                show={show} 
+                onHide={handleClose}
+            >
+                <Modal.Header closeButton>
+                <Modal.Title>Student Registration</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Container>
+                    {status ?
+                        <Container className="text-center">
+                            <span className="lead text-muted text-center">
+                                <img className="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="300" height="300" src={new_era} alt="workforce"></img>
+                            </span>
+                            <br />
+                            <h3 className="mt-5">You have successfully completed your registration.</h3>
+                            <h3>You can now login to your account.</h3>
+                            <Button className="mt-3" onClick={handleClose} size="lg" variant="success">Close</Button>
+                        </Container>
+                  
+                        : <Container >
+                            <p className="lead text-muted mb-3">Please provide all required details.</p>
+                            <StudentComponent setStatus={setStatus}/>
+                        </Container>
+                        }
+                        
+                    </Container>
+                    
+                </Modal.Body>
+            </Modal>
+
+            <Modal 
+                size="lg"
+                centered
+                show={parentShow} 
+                onHide={handleParentClose}  
+            >
+                <Modal.Header closeButton>
+                <Modal.Title>Parent Registration</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Container>
+                    {parentStatus ?
+                        <Container className="text-center">
+                            <span className="lead text-muted text-center">
+                                <img className="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="300" height="300" src={new_era} alt="workforce"></img>
+                            </span>
+                            <br />
+                            <h3 className="mt-5">You have successfully completed your registration.</h3>
+                            <h3>You can now login to your account.</h3>
+                            <Button className="mt-3" onClick={handleParentClose} size="lg" variant="success">Close</Button>
+                        </Container>
+                  
+                        : <Container >
+                            <p className="lead text-muted mb-3">Please provide all required details.</p>
+                            <ParentComponent setStatus={setParentStatus}/>
+                        </Container>
+                        }
+                        
+                    </Container>
+                    
+                </Modal.Body>
+            </Modal>
         </React.Fragment>
     )
 }

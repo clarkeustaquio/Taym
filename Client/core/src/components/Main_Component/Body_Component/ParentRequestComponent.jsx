@@ -14,8 +14,11 @@ function ParentRequestComponent(){
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     
+    const domain = 'http://localhost:8000/'
+    const remote = 'https://taym.herokuapp.com/'
+
     const handleAccept = () => {
-        axios.post('https://taym.herokuapp.com/api/accept-parent/', {
+        axios.post(`${domain}api/accept-parent/`, {
 
         }, {
             headers: {
@@ -31,7 +34,7 @@ function ParentRequestComponent(){
     }
 
     const handleDecline = () => {
-        axios.post('https://taym.herokuapp.com/api/decline-parent/', {
+        axios.post(`${domain}api/decline-parent/`, {
 
         }, {
             headers: {
@@ -55,7 +58,7 @@ function ParentRequestComponent(){
     }, [])
 
     useEffect(() => {
-        axios.get('https://taym.herokuapp.com/api/parent-check/', {
+        axios.get(`${domain}api/parent-check/`, {
             headers: {
                 'Authorization': 'Token ' + token
             }

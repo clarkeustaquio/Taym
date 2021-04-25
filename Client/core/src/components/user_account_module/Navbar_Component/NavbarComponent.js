@@ -14,11 +14,11 @@ function NavbarComponent(){
                 <Container>
                 <Navbar.Brand as={Link} to='/login'><LogoComponent /></Navbar.Brand>
                 <Navbar.Toggle aria-controls='toggle-navbar' />
-                <Navbar.Collapse id='toggle-navbar'>
+                {/* <Navbar.Collapse id='toggle-navbar'>
                     <Nav className='ml-auto mr-5'>
                         <Nav.Link as={Link} to='/register'>Register</Nav.Link>
                     </Nav>
-                </Navbar.Collapse>
+                </Navbar.Collapse> */}
                 </Container>
             </Navbar>
         </React.Fragment>

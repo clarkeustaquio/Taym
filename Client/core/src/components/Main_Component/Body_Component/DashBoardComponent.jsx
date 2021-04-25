@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { Bar, Line, Pie } from 'react-chartjs-2'
 import axios from 'axios'
 import { Label } from '@material-ui/icons'
+import moment from 'moment'
+
+const current_date = moment().format("DD-MM-YYYY hh:mm:ss")
 
 function DashBoardComponent(){
     const token = localStorage.getItem('token')
@@ -40,8 +43,11 @@ function DashBoardComponent(){
         'rgba(255, 159, 64, 1)'
     ]
 
+    const domain = 'http://localhost:8000/'
+    const remote = 'https://taym.herokuapp.com/'
+
     useEffect(() => {
-        axios.get('https://taym.herokuapp.com/api/dashboard/', {
+        axios.get(`${domain}api/dashboard/`, {
             headers: {
                 'Authorization': 'Token ' + token
             }
@@ -74,7 +80,7 @@ function DashBoardComponent(){
     return (
         <React.Fragment>
             <div className="mt-1">
-                <h5 className="font-weight-bold ml-1">Daily Dashboard</h5>
+                <h5 className="font-weight-bold ml-1">Daily Dashboard - {current_date}</h5>
                 <Bar 
                     data={{
                         labels: subject.map((item) => item.subject),
@@ -112,7 +118,8 @@ function DashBoardComponent(){
                             yAxes: [
                                 {
                                     ticks: {
-                                        display: false,
+                                        // display: false,
+                                        display: true,
                                         beginAtZero: true
                                     }
                                 }

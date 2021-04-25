@@ -27,9 +27,12 @@ function ParentViewComponent(){
         setSubjectName(subject)
         setSubjectID(id)
     }
+
+    const domain = 'http://localhost:8000/'
+    const remote = 'https://taym.herokuapp.com/'
     
     const handleApprove = () => {
-        axios.post('https://taym.herokuapp.com/api/approve-task/', {
+        axios.post(`${domain}api/approve-task/`, {
             subject_id: subjectID
         }, {
             headers: {
@@ -47,7 +50,7 @@ function ParentViewComponent(){
     }
 
     const handleDisapprove = () => {
-        axios.post('https://taym.herokuapp.com/api/disapprove-task/', {
+        axios.post(`${domain}api/disapprove-task/`, {
             subject_id: subjectID
         }, {
             headers: {
@@ -66,7 +69,7 @@ function ParentViewComponent(){
 
 
     useEffect(() => {
-        axios.get('https://taym.herokuapp.com/api/child-task/', {
+        axios.get(`${domain}api/child-task/`, {
             headers: {
                 'Authorization': 'Token ' + token
             }
@@ -105,6 +108,7 @@ function ParentViewComponent(){
                                             <th>Start Time</th>
                                             <th>End Time</th>
                                             <th>Time Spent</th>
+                                            <th>Task Remark</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -116,13 +120,14 @@ function ParentViewComponent(){
                                                     <td>{item.start_date}</td>
                                                     <td>{item.end_date}</td>
                                                     <td>{item.time_spent}</td>
+                                                    <td>{item.task_remark}</td>
                                                     <td>
                                                         <div className="row">
                                                             <div className="col">
                                                                 <Button onClick={() => handleDisapproveShow(item.id, item.task)} variant="danger" block>Disapprove</Button>
                                                             </div>
                                                             <div className="col">
-                                                                <Button onClick={() => handleShow(item.id, item.task)} className="mr-n5" variant="success" block>Approve</Button>
+                                                                <Button onClick={() => handleShow(item.id, item.task)} variant="success" block>Approve</Button>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -148,10 +153,10 @@ function ParentViewComponent(){
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="danger" onClick={handleClose}>
-                    Cancel
+                    CANCEL
                 </Button>
                 <Button variant="success" onClick={handleApprove}>
-                    Approve
+                    OK
                 </Button>
                 </Modal.Footer>
             </Modal>
@@ -165,10 +170,10 @@ function ParentViewComponent(){
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="danger" onClick={handleDisapproveClose}>
-                    Cancel
+                    CANCEL
                 </Button>
                 <Button variant="success" onClick={handleDisapprove}>
-                    Disapprove
+                    OK
                 </Button>
                 </Modal.Footer>
             </Modal>

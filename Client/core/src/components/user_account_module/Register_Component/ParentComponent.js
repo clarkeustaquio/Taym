@@ -29,7 +29,8 @@ import PrivacyPolicyComponent from '../Privacy_Policy_Component/PrivacyPolicyCom
 // Url
 import { registration_parent_request_url, registration_get_request_url } from '../../../static/api_request_urls'
 
-function ParentFormComponent({ setStatus, setIsProceed }){
+// function ParentFormComponent({ setStatus, setIsProceed }){
+function ParentFormComponent({ setStatus }){
     const history = useHistory()
 
     const state = useSelector(state => state.RegistrationReducer)
@@ -276,13 +277,16 @@ function ParentFormComponent({ setStatus, setIsProceed }){
                             </Form.Row> */}
                             
                         </Form.Group>
-                        <Button type="submit" className="float-right m-1" variant="success" size="md" disabled={isLoading}>
+                        {/* <Button type="submit" className="float-right m-1" variant="success" size="md" disabled={isLoading}>
+                            {isLoading ? <div>Loading <CircularProgress size={25} className="ml-2 float-right" /></div> : <div>Submit</div>}
+                        </Button> */}
+                        <Button type="submit" className="float-right" variant="success" size="md" disabled={isLoading}>
                             {isLoading ? <div>Loading <CircularProgress size={25} className="ml-2 float-right" /></div> : <div>Submit</div>}
                         </Button>
                         {/* <Link to='/login'> */}
-                            <Button onClick={() => setIsProceed(false)} className="float-right m-1" variant="danger" size="md">
+                            {/* <Button onClick={() => setIsProceed(false)} className="float-right m-1" variant="danger" size="md">
                                 Cancel
-                            </Button>
+                            </Button> */}
                         {/* </Link>  */}
                     </Form>
                     <PrivacyPolicyComponent modalShow={modalShow} setModalShow={setModalShow}/>

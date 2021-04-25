@@ -1,3 +1,4 @@
+import calendar
 from django.shortcuts import render
 from django.utils import timezone
 from rest_framework import status
@@ -12,7 +13,7 @@ from .serializers import TaskHistorySerializer
 from user_account_api.models import CustomUser, Subject
 from user_account_api.serializers import SubjectSerializer
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 # Create your views here.
 
 @api_view(['POST'])
@@ -45,6 +46,7 @@ def task_manager(request):
 
         if request.method == 'POST':
             if not user.is_working:
+                print(subject_id)
                 user.task_start_time = timezone.now()
                 user.is_working = True
                 user.track_task = current_task
@@ -78,6 +80,13 @@ def stop_task(request):
         except KeyError as e:
             return Response({
                 'task_name': 'This field is required.'
+            }, status=status.HTTP_200_OK)
+
+        try:
+            task_remark = request.data['task_remark']
+        except KeyError:
+            return Response({
+                'task_remark': 'This field is required.'
             }, status=status.HTTP_200_OK)
 
         if user.is_working:
@@ -116,7 +125,8 @@ def stop_task(request):
                 start_date=user.task_start_time,
                 end_date=end_date,
                 time_spent=parse_spent_time,
-                spent_in_second=total
+                spent_in_second=total,
+                task_remark=task_remark
             )
 
             user.is_working = False
@@ -262,12 +272,12 @@ def delete_task(request):
         }, status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def history(request):
     email = request.user.username
-
+    
     try:
         user = CustomUser.objects.get(username=email)
     except CustomUser.DoesNotExist:
@@ -275,6 +285,18 @@ def history(request):
             'status': 'User not found.'
         }, status=status.HTTP_400_BAD_REQUEST)
     else:
+        try:
+            month_day = request.data['month']
+        except KeyError:
+            month = datetime.today().month
+        else:
+            month = month_day
+
+        month_name = calendar.month_name[month]
+
+        subjects = Subject.objects.filter(student=user)
+        subject_serializer = SubjectSerializer(subjects, many=True)
+
         today = datetime.today() - timedelta(days=1)
         today_task_hisotry = TaskHistory.objects.filter(user=user, start_date__gte=today).order_by('-start_date')
         today_serializer = TaskHistorySerializer(today_task_hisotry, many=True)
@@ -285,11 +307,43 @@ def history(request):
 
         all_history = TaskHistory.objects.filter(user=user).exclude(start_date__gte=week).order_by('-start_date')
         all_serializer = TaskHistorySerializer(all_history, many=True)
+
+        year = datetime.today().year
+
+        current_calendar = calendar.monthcalendar(year, month)
         
+        monthly_calendary = list()
+
+        for count, week in enumerate(current_calendar):
+            days = [day for day in week if day != 0]
+
+            start_date = date(year, month, days[0])
+            end_date = date(year, month, days[-1]) + timedelta(days=1)
+
+            weeks = list()
+            for subject in subjects:
+                task_history = TaskHistory.objects.filter(
+                    user=user,
+                    subject=subject,
+                    is_parent_approve=True,
+                    is_done_approve=True,
+                    start_date__range=[start_date, end_date]
+                )
+
+                total_second = 0
+                for task in task_history:
+                    total_second += task.spent_in_second
+
+                weeks.append(total_second)
+            monthly_calendary.append(weeks)
+
         return Response({
             'today_history': today_serializer.data,
             'week_history': weeK_serializer.data,
-            'all_history': all_serializer.data
+            'all_history': all_serializer.data,
+            'subjects': subject_serializer.data,
+            'monthly_calendar': monthly_calendary,
+            'month_name': month_name
         }, status=status.HTTP_200_OK)
 
 @api_view(['GET'])

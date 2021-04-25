@@ -12,6 +12,7 @@ class TaskHistory(models.Model):
     end_date = models.DateTimeField()
     time_spent = models.CharField(max_length=20)
     spent_in_second = models.BigIntegerField()
+    task_remark = models.CharField(max_length=150, default='')
 
     is_parent_approve = models.BooleanField(default=False)
     is_done_approve = models.BooleanField(default=False)

@@ -29,7 +29,8 @@ import PrivacyPolicyComponent from '../Privacy_Policy_Component/PrivacyPolicyCom
 // Url
 import { registration_request_url, registration_get_request_url } from '../../../static/api_request_urls'
 
-function FormComponent({ setStatus, setIsProceed }){
+function StudentComponent({ setStatus }){
+// function FormComponent({ setStatus, setIsProceed }){
     const history = useHistory()
     const state = useSelector(state => state.RegistrationReducer)
     const dispatch = useDispatch()
@@ -269,7 +270,7 @@ function FormComponent({ setStatus, setIsProceed }){
                             <Form.Text className="text-muted">
                             Your password must be at least (10) characters long,
                             which consist of at least (1) uppercase letter, 1 lowercase letter, 
-                            1 number and 1 special character.
+                            and 1 number.
                             </Form.Text>
                         </Form.Group>
 
@@ -307,13 +308,16 @@ function FormComponent({ setStatus, setIsProceed }){
                             </Form.Row> */}
                             
                         </Form.Group>
-                        <Button type="submit" className="float-right m-1" variant="success" size="md" disabled={state.isLoading}>
+                        {/* <Button type="submit" className="float-right m-1" variant="success" size="md" disabled={state.isLoading}>
+                            {state.isLoading ? <div>Loading <CircularProgress size={25} className="ml-2 float-right" /></div> : <div>Submit</div>}
+                        </Button> */}
+                        <Button type="submit" className="float-right" variant="success" size="md" disabled={state.isLoading}>
                             {state.isLoading ? <div>Loading <CircularProgress size={25} className="ml-2 float-right" /></div> : <div>Submit</div>}
                         </Button>
                         {/* <Link to='/login'> */}
-                            <Button onClick={() => setIsProceed(false)} className="float-right m-1" variant="danger" size="md">
+                            {/* <Button onClick={() => setIsProceed(false)} className="float-right m-1" variant="danger" size="md">
                                 Cancel
-                            </Button>
+                            </Button> */}
                         {/* </Link>  */}
                     </Form>
                     <PrivacyPolicyComponent modalShow={modalShow} setModalShow={setModalShow}/>
@@ -321,4 +325,4 @@ function FormComponent({ setStatus, setIsProceed }){
     )
 }
 
-export default FormComponent
+export default StudentComponent

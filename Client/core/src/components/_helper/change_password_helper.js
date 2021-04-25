@@ -12,7 +12,8 @@ function ChangePasswordHelper(){
     const token = localStorage.getItem('token')
     const [isAuth, setAuth] = React.useState(false)
 
-
+    const domain = 'http://localhost:8000/'
+    const remote = 'https://taym.herokuapp.com/'
 
     React.useEffect(() => {
         const validate_token = {
@@ -27,7 +28,7 @@ function ChangePasswordHelper(){
             if(!token){
                 history.push('/login')
             }else{
-                fetch('https://taym.herokuapp.com/api/authorize-token/', validate_token)
+                fetch(`${domain}api/authorize-token/`, validate_token)
                 .then((response) => {
                     if(response.status === 200){
                         setAuth(true)
