@@ -80,7 +80,7 @@ function DashBoardComponent(){
     return (
         <React.Fragment>
             <div className="mt-1">
-                <h5 className="font-weight-bold ml-1">Daily Dashboard - {current_date}</h5>
+                <h5 className="font-weight-bold ml-1">Daily Dashboard</h5>
                 <Bar 
                     data={{
                         labels: subject.map((item) => item.subject),
