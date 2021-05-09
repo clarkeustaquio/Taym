@@ -12,6 +12,7 @@ gunicorn = "*"
 django-heroku = "*"
 psycopg2 = "*"
 certifi = "*"
+python-dateutil = "*"
 
 [dev-packages]
 

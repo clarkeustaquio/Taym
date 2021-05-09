@@ -3,6 +3,7 @@ import { Bar, Line, Pie } from 'react-chartjs-2'
 import axios from 'axios'
 import { Label } from '@material-ui/icons'
 import moment from 'moment'
+import { domain } from '../../../static/api_request_urls'
 
 const current_date = moment().format("DD-MM-YYYY hh:mm:ss")
 
@@ -42,9 +43,6 @@ function DashBoardComponent(){
         'rgba(153, 102, 255, 1)',
         'rgba(255, 159, 64, 1)'
     ]
-
-    const domain = 'http://localhost:8000/'
-    const remote = 'https://taym.herokuapp.com/'
 
     useEffect(() => {
         axios.get(`${domain}api/dashboard/`, {

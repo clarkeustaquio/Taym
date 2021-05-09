@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Modal } from 'react-bootstrap'
 import axios from 'axios'
-
+import { domain } from '../../../static/api_request_urls'
 
 function ParentRequestComponent(){
     const token = localStorage.getItem('token')
@@ -13,9 +13,6 @@ function ParentRequestComponent(){
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    
-    const domain = 'http://localhost:8000/'
-    const remote = 'https://taym.herokuapp.com/'
 
     const handleAccept = () => {
         axios.post(`${domain}api/accept-parent/`, {

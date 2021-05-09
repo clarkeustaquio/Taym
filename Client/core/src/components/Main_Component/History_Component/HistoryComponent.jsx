@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Container, Table, Modal} from 'react-bootstrap'
+import { Button, Container, Table, Modal, Popover, OverlayTrigger } from 'react-bootstrap'
 import axios from 'axios'
 
 import DashBoardComponent from './DashBoardComponent'
+import { DateRangePicker } from 'react-date-range';
+import DateRangeIcon from '@material-ui/icons/DateRange';
+import Moment from 'moment'
+import { domain } from '../../../static/api_request_urls'
 
 function HistoryComponent(){
     const token = localStorage.getItem('token')
@@ -18,9 +22,6 @@ function HistoryComponent(){
     const [calendar, setCalendar] = useState([])
 
     const [monthName, setMonthName] = useState('')
-
-    const domain = 'http://localhost:8000/'
-    const remote = 'https://taym.herokuapp.com/'
 
     useEffect(() => {
         axios.get(`${domain}api/history/`, {
@@ -89,6 +90,70 @@ function HistoryComponent(){
         document.title = 'History'
     }, [])
 
+    const [startDate, setStartDate] = useState(new Date())
+    const [endDate, setEndDate] = useState(new Date())
+    const [dateChange, setDateChange] = useState(false)
+    const [submit, setSubmit] = useState(false)
+
+    const selectionRange = {
+        startDate: startDate,
+        endDate: endDate,
+        key: 'selection',
+    }
+
+    const handleDateSelect = (date) => {
+        setStartDate(date.selection.startDate)
+        setEndDate(date.selection.endDate)
+        setDateChange(true)
+    }
+
+    const handleFilterDate = () => {
+        console.log(startDate, endDate)
+        axios.post(`${domain}api/filter-history/`, {
+            start_date: startDate,
+            end_date: endDate
+        }, {
+            headers: {
+                'Authorization': 'Token ' + token
+            }
+        }).then(response => {
+            if(response.statusText === 'OK'){
+                setWeekHistory(response.data.week_history)
+                setAllHistory(response.data.all_history)
+                setSubject(response.data.subjects)
+                setCalendar(response.data.monthly_calendar)
+                setMonthName(response.data.month_name)
+                setSubmit(true)
+                setIsMount(true)
+            }
+        }).catch(() => {
+            throw new Error('Server Refused. Try again later.')
+        })
+    }
+
+    const handleClear = () => {
+        axios.get(`${domain}api/history/`, {
+            headers: {
+                'Authorization': 'Token ' + token
+            }
+        }).then(response => {
+            if(response.statusText === 'OK'){
+                
+                setWeekHistory(response.data.week_history)
+                setAllHistory(response.data.all_history)
+                setSubject(response.data.subjects)
+                setCalendar(response.data.monthly_calendar)
+                setMonthName(response.data.month_name)
+                
+                setStartDate(new Date())
+                setEndDate(new Date())
+                setDateChange(false)
+                setSubmit(false)
+                setIsMount(true)
+            }
+        })
+    }
+
     return (
         <React.Fragment>
             {isMount === false ? null :
@@ -142,12 +207,56 @@ function HistoryComponent(){
                 </div>
                 }
                         
-                {allHistory.length === 0 ? null :
-                <div>
+                
+                <div className='mb-5'>
                     <div className="mt-5">
-                        <span className="h6 font-weight-bold text-muted">All History</span>
+                        <div className="row">
+                            <div className="col mt-2">
+                                <span className="h6 font-weight-bold text-muted float-left">All History</span>
+                            </div>
+                            <div className="col">
+                                {submit === true 
+                                ? <Button onClick={() => handleClear()} variant="outline-primary" className="float-right ml-2">Clear Date</Button>
+                                : <Button onClick={() => handleFilterDate()} variant="outline-primary" className="float-right ml-2">Filter Date</Button>
+                                }
+                                
+
+                                <div className="float-right">
+                                    {submit === true ? null :
+                                    <OverlayTrigger
+                                        trigger="click"
+                                        key="bottom"
+                                        placement="bottom"
+                                        rootClose
+                                        overlay={
+                                            <Popover style={{ maxWidth: '650px' }} id={`popover-positioned-bottom`}>
+                                                <Popover.Content>
+                                                    <DateRangePicker
+                                                        ranges={[selectionRange]}
+                                                        onChange={handleDateSelect}
+                                                    />
+                                                </Popover.Content>
+                                            </Popover>
+                                        }
+                                    >   
+                                        <Button style={{ background: 'white' }} className="border text-dark" block>
+                                            <div className="float-left">
+                                            <DateRangeIcon /> 
+                                            <span className="ml-2">{dateChange === false ? 'Select Date' : <span>
+                                            {Moment(startDate).format('MMM DD')} - {Moment(endDate).format('MMM DD')}
+                                            </span>}</span>
+                                            </div>
+                                        </Button>
+                                    </OverlayTrigger>
+                                    }
+                                </div>
+                            </div>
+                        </div>
                         <hr></hr>
                     </div>
+                    
+                    {allHistory.length === 0 ? 
+                    <h5 className="text-center muted font-weight-bold">No available history.</h5> :
                     <Table striped bordered hover>
                         <thead>
                             <tr>
@@ -176,10 +285,10 @@ function HistoryComponent(){
                             })}
                         </tbody>
                     </Table>
+                    }
                 </div>
-                }
+               
             </Container>
-
             }
             
             <Modal centered show={deleteShow} onHide={handleDeleteClose}>

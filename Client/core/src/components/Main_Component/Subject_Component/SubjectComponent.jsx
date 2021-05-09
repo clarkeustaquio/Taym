@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Button, Table, Modal, Form } from 'react-bootstrap'
 import axios from 'axios'
-
+import { domain } from '../../../static/api_request_urls'
 function SubjectComponent(){
     const token = localStorage.getItem('token')
     const [subject, setSubject] = useState([])
@@ -9,9 +9,6 @@ function SubjectComponent(){
     useEffect(() => {
         document.title = 'Subject'
     }, [])
-
-    const domain = 'http://localhost:8000/'
-    const remote = 'https://taym.herokuapp.com/'
 
     useEffect(() => {
         axios.get(`${domain}api/subject/`, {

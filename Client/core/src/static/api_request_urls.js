@@ -1,6 +1,6 @@
 // Login and Logout
 
-const domain = 'http://localhost:8000/'
+export const domain = 'http://localhost:8000/'
 const remote = 'https://taym.herokuapp.com/'
 
 export const login_request_url = `${domain}api/login/`

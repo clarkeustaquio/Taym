@@ -1,4 +1,6 @@
 import calendar
+import pytz
+
 from django.shortcuts import render
 from django.utils import timezone
 from rest_framework import status
@@ -13,7 +15,9 @@ from .serializers import TaskHistorySerializer
 from user_account_api.models import CustomUser, Subject
 from user_account_api.serializers import SubjectSerializer
 
+from dateutil import parser
 from datetime import datetime, timedelta, date
+
 # Create your views here.
 
 @api_view(['POST'])
@@ -277,7 +281,115 @@ def delete_task(request):
 @permission_classes([IsAuthenticated])
 def history(request):
     email = request.user.username
-    
+
+    try:
+        user = CustomUser.objects.get(username=email)
+    except CustomUser.DoesNotExist:
+        return Response({
+            'status': 'User not found.'
+        }, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        try:
+            month_day = int(request.data['month'])
+        except KeyError:
+            month = datetime.today().month
+        except TypeError:
+            month = datetime.today().month
+        else:
+            month = month_day
+
+        month_name = calendar.month_name[month]
+
+        subjects = Subject.objects.filter(student=user)
+        subject_serializer = SubjectSerializer(subjects, many=True)
+
+        today = datetime.today() - timedelta(days=1)
+        today_task_hisotry = TaskHistory.objects.filter(user=user, start_date__gte=today).order_by('-start_date')
+        today_serializer = TaskHistorySerializer(today_task_hisotry, many=True)
+
+        week = datetime.today() - timedelta(days=7)
+        week_task_history = TaskHistory.objects.filter(user=user, start_date__gte=week).order_by('-start_date')
+        weeK_serializer = TaskHistorySerializer(week_task_history, many=True)
+
+        all_history = TaskHistory.objects.filter(user=user).exclude(start_date__gte=week).order_by('-start_date')
+        all_serializer = TaskHistorySerializer(all_history, many=True)
+
+        year = datetime.today().year
+
+        current_calendar = calendar.monthcalendar(year, month)
+
+        monthly_calendary = list()
+
+        for count, week in enumerate(current_calendar):
+            days = [day for day in week if day != 0]
+
+            start_date = date(year, month, days[0])
+            end_date = date(year, month, days[-1]) + timedelta(days=1)
+
+            weeks = list()
+            for subject in subjects:
+                task_history = TaskHistory.objects.filter(
+                    user=user,
+                    subject=subject,
+                    is_parent_approve=True,
+                    is_done_approve=True,
+                    start_date__range=[start_date, end_date]
+                )
+
+                total_second = 0
+                for task in task_history:
+                    total_second += task.spent_in_second
+
+                weeks.append(total_second)
+            monthly_calendary.append(weeks)
+
+        return Response({
+            'today_history': today_serializer.data,
+            'week_history': weeK_serializer.data,
+            'all_history': all_serializer.data,
+            'subjects': subject_serializer.data,
+            'monthly_calendar': monthly_calendary,
+            'month_name': month_name
+        }, status=status.HTTP_200_OK)
+
+def date_handler(date):
+    parse_date = parser.parse(date)
+
+    print(date)
+    modify_timezone = parse_date.replace(tzinfo=pytz.UTC)
+    timezone_country = modify_timezone.astimezone(pytz.timezone("Asia/Manila"))
+
+    format_date = modify_timezone.strftime('%Y-%m-%d')
+    print(format_date)
+    return format_date
+
+def equal_date(date):
+    parse_date = parser.parse(date)
+    modify_timezone = parse_date.replace(tzinfo=pytz.UTC)
+    timezone_country = modify_timezone.astimezone(pytz.timezone("Asia/Manila"))
+
+    year = modify_timezone.strftime('%Y')
+    month = modify_timezone.strftime('%m')
+    day = modify_timezone.strftime('%d')
+
+    return {
+        'year': int(year),
+        'month': int(month),
+        'day': int(day)
+    }
+
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def filter_history(request):
+    email = request.user.username
+
+    print('ReqS', request.data['start_date'])
+    print('ReqE', request.data['end_date'])
+
+    start_date_req = date_handler(request.data['start_date'])
+    end_date_req = date_handler(request.data['end_date'])
+
     try:
         user = CustomUser.objects.get(username=email)
     except CustomUser.DoesNotExist:
@@ -305,13 +417,29 @@ def history(request):
         week_task_history = TaskHistory.objects.filter(user=user, start_date__gte=week).order_by('-start_date')
         weeK_serializer = TaskHistorySerializer(week_task_history, many=True)
 
-        all_history = TaskHistory.objects.filter(user=user).exclude(start_date__gte=week).order_by('-start_date')
-        all_serializer = TaskHistorySerializer(all_history, many=True)
+        if start_date_req == end_date_req:
+            date_req = equal_date(end_date_req) 
+
+            all_history = TaskHistory.objects.filter(
+                user=user,
+                start_date__year=date_req['year'], 
+                start_date__month=date_req['month'], 
+                start_date__day=date_req['day'],
+            ).exclude(start_date__gte=week).order_by('-start_date')
+            all_serializer = TaskHistorySerializer(all_history, many=True)
+
+        else:
+            all_history = TaskHistory.objects.filter(
+                user=user,
+                start_date__range=[start_date_req, end_date_req]
+            ).exclude(start_date__gte=week).order_by('-start_date')
+
+            all_serializer = TaskHistorySerializer(all_history, many=True)
 
         year = datetime.today().year
 
         current_calendar = calendar.monthcalendar(year, month)
-        
+
         monthly_calendary = list()
 
         for count, week in enumerate(current_calendar):

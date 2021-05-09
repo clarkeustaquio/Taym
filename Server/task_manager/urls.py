@@ -10,6 +10,7 @@ urlpatterns = [
     path('get-task/', views.get_task, name='get_task'),
     path('delete-task/', views.delete_task, name='delete_task'),
     path('history/', views.history, name='history'),
+    path('filter-history/', views.filter_history, name='filter_history'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('parent-check/', views.parent_check, name='parent_check'),
     path('accept-parent/', views.accept_parent, name='accept_parent'),

@@ -4,7 +4,7 @@ function LogoComponent(){
     return (
         <React.Fragment>
             <span className="h4">
-                <span style={{color: '#5cb85c'}}>Taym</span>
+                <span style={{color: '#5cb85c'}}>Time</span>
             </span>
         </React.Fragment>
     )

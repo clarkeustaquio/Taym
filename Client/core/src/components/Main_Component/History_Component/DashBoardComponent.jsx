@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Bar, Line, Pie } from 'react-chartjs-2'
-import { Form, Row } from 'react-bootstrap'
+import { Button, Form, Row } from 'react-bootstrap'
 import axios from 'axios'
 import { Label } from '@material-ui/icons'
 
@@ -62,19 +62,19 @@ function DashBoardComponent({ subject, calendar, handleMonth, monthName}){
                 <h5 className="font-weight-bold ml-1 mt-2 float-left">Monthly Dashboard - {monthName}</h5>
                 <div className="float-right">
                     <Form.Group>
-                        <Form.Control as="select">
-                            <option onClick={() => handleMonth(1)}>January</option>
-                            <option onClick={() => handleMonth(2)}>February</option>
-                            <option onClick={() => handleMonth(3)}>March</option>
-                            <option onClick={() => handleMonth(4)}>April</option>
-                            <option onClick={() => handleMonth(5)}>May</option>
-                            <option onClick={() => handleMonth(6)}>June</option>
-                            <option onClick={() => handleMonth(7)}>July</option>
-                            <option onClick={() => handleMonth(8)}>August</option>
-                            <option onClick={() => handleMonth(9)}>September</option>
-                            <option onClick={() => handleMonth(10)}>October</option>
-                            <option onClick={() => handleMonth(11)}>November</option>
-                            <option onClick={() => handleMonth(12)}>December</option>
+                        <Form.Control as="select" onChange={(event) => handleMonth(event.target.value)}>
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
                         </Form.Control>
                     </Form.Group>
                     </div>

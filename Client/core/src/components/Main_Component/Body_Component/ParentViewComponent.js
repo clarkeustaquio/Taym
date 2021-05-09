@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react'
 import { Table, Button, Card, Row, Col, Modal } from 'react-bootstrap'
+import { domain } from '../../../static/api_request_urls'
 
 function ParentViewComponent(){
     const token = localStorage.getItem('token')
@@ -27,9 +28,6 @@ function ParentViewComponent(){
         setSubjectName(subject)
         setSubjectID(id)
     }
-
-    const domain = 'http://localhost:8000/'
-    const remote = 'https://taym.herokuapp.com/'
     
     const handleApprove = () => {
         axios.post(`${domain}api/approve-task/`, {

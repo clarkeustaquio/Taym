@@ -41,7 +41,7 @@ function App() {
   }, [state.isMobile, state.width])
   
   React.useEffect(() => {
-    document.title = 'Taym'
+    document.title = 'Time'
   })
   return (
     <React.Fragment> 

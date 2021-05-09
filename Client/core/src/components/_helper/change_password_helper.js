@@ -6,14 +6,12 @@ import ChangePasswordComponent from '../user_account_module/Change_Password_Comp
 import WaveComponent from '../user_account_module/Wave_Component/WaveComponent'
 
 import { useHistory } from 'react-router-dom'
+import { domain } from '../../static/api_request_urls'
 
 function ChangePasswordHelper(){
     const history = useHistory()
     const token = localStorage.getItem('token')
     const [isAuth, setAuth] = React.useState(false)
-
-    const domain = 'http://localhost:8000/'
-    const remote = 'https://taym.herokuapp.com/'
 
     React.useEffect(() => {
         const validate_token = {

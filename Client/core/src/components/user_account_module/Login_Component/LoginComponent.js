@@ -25,7 +25,7 @@ function LoginComponent(){
     }
 
     React.useEffect(() => {
-        document.title = 'Taym'
+        document.title = 'Time'
     }, [])
 
     return (
@@ -34,7 +34,7 @@ function LoginComponent(){
                 <Container fluid className="h-100">
                     <div className="row featurette">
                         <div className={margin_login}>
-                            <h3 className="featurette-heading font-weight-bold">Welcome to Taym.</h3>
+                            <h3 className="featurette-heading font-weight-bold">Welcome to Time.</h3>
                             <span className="lead text-muted">Login to Continue.</span>
                             
                             <div className="mt-4">

@@ -8,6 +8,7 @@ import DashBoardComponent from './DashBoardComponent'
 import axios from 'axios'
 import moment from 'moment'
 import { TrendingUpOutlined } from '@material-ui/icons';
+import { domain } from '../../../static/api_request_urls'
 
 function HomeComponent(){
     const token = localStorage.getItem('token')
@@ -42,9 +43,6 @@ function HomeComponent(){
     useEffect(() => {
         document.title = 'Home'
     })
-
-    const domain = 'http://localhost:8000/'
-    const remote = 'https://taym.herokuapp.com/'
 
     useEffect(() => {
         axios.get(`${domain}api/subject/`, {
