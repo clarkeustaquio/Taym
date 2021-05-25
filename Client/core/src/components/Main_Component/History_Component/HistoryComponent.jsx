@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Container, Table, Modal, Popover, OverlayTrigger } from 'react-bootstrap'
+import { Button, Container, Table, Modal, Popover, OverlayTrigger, Form } from 'react-bootstrap'
 import axios from 'axios'
 
 import DashBoardComponent from './DashBoardComponent'
@@ -153,6 +153,14 @@ function HistoryComponent(){
             }
         })
     }
+    const [showRemark, setShowRemark] = useState(false)
+    const handleCloseRemark = () => setShowRemark(false)
+    const handleOpenRemark = (this_remark) => {
+        setShowRemark(true)
+        setMyRemark(this_remark)
+    }
+
+    const [myRemark, setMyRemark] = useState('')
 
     return (
         <React.Fragment>
@@ -193,7 +201,8 @@ function HistoryComponent(){
                                         <td>{item.start_date}</td>
                                         <td>{item.end_date}</td>
                                         <td>{item.time_spent}</td>
-                                        <td>{item.task_remark}</td>
+                                        {/* <td>{item.task_remark}</td> */}
+                                        <td><Button onClick={() => handleOpenRemark(item.remark)} variant="success" block>View Remark</Button></td>
                                         <td>
                                             <Button onClick={() => handleDeleteShow(item.id, item.task)} block variant="danger" block>Delete</Button>
                                         </td>
@@ -276,7 +285,8 @@ function HistoryComponent(){
                                         <td>{item.start_date}</td>
                                         <td>{item.end_date}</td>
                                         <td>{item.time_spent}</td>
-                                        <td>{item.task_remark}</td>
+                                        {/* <td>{item.task_remark}</td> */}
+                                        <td><Button onClick={() => handleOpenRemark(item.remark)} variant="success" block>View Remark</Button></td>
                                         <td>
                                             <Button onClick={() => handleDeleteShow(item.id, item.task)} block variant="danger" block>Delete</Button>
                                         </td>
@@ -304,6 +314,23 @@ function HistoryComponent(){
                 </Button>
                 <Button variant="danger" onClick={handleDeleteTask}>
                     OK
+                </Button>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal show={showRemark} onHide={handleCloseRemark}>
+                <Modal.Header closeButton>
+                <Modal.Title>Remark</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                        <Form.Group controlId="exampleForm.ControlTextarea1">
+                            <Form.Label>Remarks</Form.Label>
+                            <Form.Control value={myRemark} as="textarea" rows={5} required contentEditable={false}/>
+                        </Form.Group>
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="success" onClick={handleCloseRemark}>
+                    Closes
                 </Button>
                 </Modal.Footer>
             </Modal>

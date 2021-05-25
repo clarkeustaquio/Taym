@@ -130,7 +130,7 @@ def stop_task(request):
                 end_date=end_date,
                 time_spent=parse_spent_time,
                 spent_in_second=total,
-                task_remark=task_remark
+                remark=task_remark
             )
 
             user.is_working = False

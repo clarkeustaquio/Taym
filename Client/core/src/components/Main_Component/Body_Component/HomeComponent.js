@@ -266,6 +266,17 @@ function HomeComponent(){
     //                 )
     //             })}
     //         </div> 
+
+
+    const [showRemark, setShowRemark] = useState(false)
+    const handleCloseRemark = () => setShowRemark(false)
+    const handleOpenRemark = (this_remark) => {
+        setShowRemark(true)
+        setMyRemark(this_remark)
+    }
+
+    const [myRemark, setMyRemark] = useState('')
+
     return (
         <React.Fragment>
             {isMount === false ? null :
@@ -359,7 +370,8 @@ function HomeComponent(){
                                                 <td>{item.start_date}</td>
                                                 <td>{item.end_date}</td>
                                                 <td>{item.time_spent}</td>
-                                                <td>{item.task_remark}</td>
+                                                {/* <td>{item.remark}</td> */}
+                                                <td><Button onClick={() => handleOpenRemark(item.remark)} variant="success" block>View Remark</Button></td>
                                                 <td>
                                                     <Button onClick={() => handleDeleteShow(item.id, item.task)} block variant="danger" block>Delete</Button>
                                                 </td>
@@ -400,9 +412,14 @@ function HomeComponent(){
                     </Modal.Header>
                     <Modal.Body>
                         <p className="text-center">Are you sure you want to end <b>{workName}</b>?</p>
-                        <Form.Group className="mt-4 text-center">
+                        {/* <Form.Group className="mt-4 text-center">
                             <Form.Label><b>Task Remark</b></Form.Label>
                             <Form.Control maxLength="35" onChange={(event) => setRemark(event.target.value)} type="text" placeholder="Enter remark" required/>
+                        </Form.Group> */}
+
+                        <Form.Group controlId="exampleForm.ControlTextarea1">
+                            <Form.Label>Remarks</Form.Label>
+                            <Form.Control onChange={(event) => setRemark(event.target.value)} as="textarea" rows={3} required/>
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
@@ -433,6 +450,24 @@ function HomeComponent(){
                 </Modal.Footer>
             </Modal>
 
+
+
+            <Modal show={showRemark} onHide={handleCloseRemark}>
+                <Modal.Header closeButton>
+                <Modal.Title>Remark</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                        <Form.Group controlId="exampleForm.ControlTextarea1">
+                            <Form.Label>Remarks</Form.Label>
+                            <Form.Control value={myRemark} as="textarea" rows={5} required contentEditable={false}/>
+                        </Form.Group>
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="success" onClick={handleCloseRemark}>
+                    Closes
+                </Button>
+                </Modal.Footer>
+            </Modal>
         </React.Fragment>
     )
 }
