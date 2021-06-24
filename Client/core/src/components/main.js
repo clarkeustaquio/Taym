@@ -8,6 +8,8 @@ import MainComponent from './Main_Component/MainComponent'
 
 // Url
 import { authorize_token_request_url } from '../static/api_request_urls'
+import axios from 'axios'
+import { domain } from '../static/api_request_urls'
 
 const isAuthenticated = () => {
     const authenticated = localStorage.getItem('token')
@@ -15,8 +17,10 @@ const isAuthenticated = () => {
 }
 
 function MainHelper(){
+    const token = localStorage.getItem('token')
     const history = useHistory()
     const [isAuth, setAuth] = React.useState(false)
+    const [isVisible, setIsVisible] = React.useState(true)
 
     React.useEffect(() => {
         const token = isAuthenticated()
@@ -47,6 +51,30 @@ function MainHelper(){
             }
         }
     }, [isAuth, history])
+
+    React.useEffect(() => {
+        window.addEventListener('blur', () => {
+          if(token !== null){
+              if(isVisible){
+                axios.get(`${domain}api/check-visibility/`, {
+                    headers: {
+                        'Authorization': 'Token ' + token
+                    }
+                }).then(response => {
+                    if(response.status === 200){
+                        setIsVisible(false)
+                    }
+                })
+              }
+          }
+        }, false)
+    
+        return () => {
+          window.removeEventListener('blur', () => {
+            setIsVisible(true)
+          }, false);
+        }
+      }, [])
 
     return (
         <React.Fragment>

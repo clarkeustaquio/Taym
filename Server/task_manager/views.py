@@ -50,7 +50,6 @@ def task_manager(request):
 
         if request.method == 'POST':
             if not user.is_working:
-                print(subject_id)
                 user.task_start_time = timezone.now()
                 user.is_working = True
                 user.track_task = current_task
@@ -130,13 +129,15 @@ def stop_task(request):
                 end_date=end_date,
                 time_spent=parse_spent_time,
                 spent_in_second=total,
-                remark=task_remark
+                remark=task_remark,
+                change_tab_count=user.page_visible
             )
 
             user.is_working = False
             user.task_start_time = None
             user.track_task = None
             user.track_subject_id = -1
+            user.page_visible = 0
             user.save()
 
             today = datetime.today() - timedelta(days=1)
@@ -355,12 +356,10 @@ def history(request):
 def date_handler(date):
     parse_date = parser.parse(date)
 
-    print(date)
     modify_timezone = parse_date.replace(tzinfo=pytz.UTC)
     timezone_country = modify_timezone.astimezone(pytz.timezone("Asia/Manila"))
 
     format_date = modify_timezone.strftime('%Y-%m-%d')
-    print(format_date)
     return format_date
 
 def equal_date(date):
@@ -383,9 +382,6 @@ def equal_date(date):
 @permission_classes([IsAuthenticated])
 def filter_history(request):
     email = request.user.username
-
-    print('ReqS', request.data['start_date'])
-    print('ReqE', request.data['end_date'])
 
     start_date_req = date_handler(request.data['start_date'])
     end_date_req = date_handler(request.data['end_date'])
@@ -541,8 +537,6 @@ def parent_check(request):
             'status': 'User not found.'
         }, status=status.HTTP_400_BAD_REQUEST)
     else:
-        print(user.is_approve_student)
-
         try:
             parent = user.parent.last_name.title() + ', ' + user.parent.first_name.title()
         except AttributeError:
@@ -595,4 +589,16 @@ def decline_parent(request):
             'is_approve_student': user.is_approve_student,
             'parent': user.parent.last_name.title() + ', ' + user.parent.first_name.title()
         }, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def check_visibility(request):
+    user = CustomUser.objects.get(username=request.user)
+
+    if user.is_working:
+        user.page_visible += 1
+
+    user.save()
+    return Response(status=status.HTTP_200_OK)
 

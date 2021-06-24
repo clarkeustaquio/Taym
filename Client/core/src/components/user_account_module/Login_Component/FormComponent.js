@@ -101,37 +101,30 @@ function FormComponent(){
                             }
                         }
                     }else{
-                        console.log('GGasdas')
                         dispatch(setPrompt(response.data.message))
                         dispatch(setAlert(true))
                         dispatch(setLoading(false))
                     }
                 }else{
-                    console.log('GG')
                     dispatch(setPrompt(response.data.message))
                     dispatch(setAlert(true))
                     dispatch(setLoading(false))
                 }
             }).catch((error) => {
-                console.log(error)
                 dispatch(setPrompt('Server Connection Refused. Try again later.'))
                 dispatch(setAlert(true))
                 dispatch(setLoading(false))
             })
 
-            // console.log('GGgggggggg')
             // fetch(login_request_url, login_request)
             // .then( response => {
             //     if(response.ok){
-            //         console.log('Yes')
             //         return response.json()  
             //     }else{
-            //         console.log('No')
             //         throw Error('Server Connection Refused. Try again later.')
             //     }   
             // }).then( data => {
             //     if(data.status === 'OK'){
-            //         console.log('Nosssss')
             //         if(data.email){
             //             if(data.token){
             //                 localStorage.setItem('token', data.token)
@@ -163,7 +156,6 @@ function FormComponent(){
             //         dispatch(setLoading(false))
             //     }
             // }).catch((error) => {
-            //     console.log(error)
             //     dispatch(setPrompt('Server Connection Refused. Try again later.'))
             //     dispatch(setAlert(true))
             //     dispatch(setLoading(false))

@@ -358,6 +358,7 @@ function HomeComponent(){
                                         <th>Start Time</th>
                                         <th>End Time</th>
                                         <th>Time Spent</th>
+                                        <th>Alt-Tab</th>
                                         <th>Task Remark</th>
                                         <th>Actions</th>
                                     </tr>
@@ -370,6 +371,7 @@ function HomeComponent(){
                                                 <td>{item.start_date}</td>
                                                 <td>{item.end_date}</td>
                                                 <td>{item.time_spent}</td>
+                                                <td>{item.change_tab_count}</td>
                                                 {/* <td>{item.remark}</td> */}
                                                 <td><Button onClick={() => handleOpenRemark(item.remark)} variant="success" block>View Remark</Button></td>
                                                 <td>
@@ -464,7 +466,7 @@ function HomeComponent(){
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="success" onClick={handleCloseRemark}>
-                    Closes
+                    Close
                 </Button>
                 </Modal.Footer>
             </Modal>

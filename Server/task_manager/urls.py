@@ -14,5 +14,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('parent-check/', views.parent_check, name='parent_check'),
     path('accept-parent/', views.accept_parent, name='accept_parent'),
-    path('decline-parent/', views.decline_parent, name='decline_parent')
+    path('decline-parent/', views.decline_parent, name='decline_parent'),
+
+    path('check-visibility/', views.check_visibility, name='check_visibility')
 ]

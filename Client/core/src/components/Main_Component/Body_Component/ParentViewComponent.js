@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react'
-import { Table, Button, Card, Row, Col, Modal } from 'react-bootstrap'
+import { Table, Button, Card, Row, Col, Modal, Form } from 'react-bootstrap'
 import { domain } from '../../../static/api_request_urls'
 
 function ParentViewComponent(){
@@ -82,6 +82,15 @@ function ParentViewComponent(){
         })
     }, [])
 
+    const [showRemark, setShowRemark] = useState(false)
+    const handleCloseRemark = () => setShowRemark(false)
+    const handleOpenRemark = (this_remark) => {
+        setShowRemark(true)
+        setMyRemark(this_remark)
+    }
+
+    const [myRemark, setMyRemark] = useState('')
+
     return (
         <React.Fragment>
             {isMount === false ? null :
@@ -106,6 +115,7 @@ function ParentViewComponent(){
                                             <th>Start Time</th>
                                             <th>End Time</th>
                                             <th>Time Spent</th>
+                                            <th>Alt-Tab</th>
                                             <th>Task Remark</th>
                                             <th>Actions</th>
                                         </tr>
@@ -118,7 +128,9 @@ function ParentViewComponent(){
                                                     <td>{item.start_date}</td>
                                                     <td>{item.end_date}</td>
                                                     <td>{item.time_spent}</td>
-                                                    <td>{item.task_remark}</td>
+                                                    <td>{item.change_tab_count}</td>
+                                                    {/* <td>{item.task_remark}</td> */}
+                                                    <td><Button onClick={() => handleOpenRemark(item.remark)} variant="success" block>View Remark</Button></td>
                                                     <td>
                                                         <div className="row">
                                                             <div className="col">
@@ -172,6 +184,23 @@ function ParentViewComponent(){
                 </Button>
                 <Button variant="success" onClick={handleDisapprove}>
                     OK
+                </Button>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal show={showRemark} onHide={handleCloseRemark}>
+                <Modal.Header closeButton>
+                <Modal.Title>Remark</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                        <Form.Group controlId="exampleForm.ControlTextarea1">
+                            <Form.Label>Remarks</Form.Label>
+                            <Form.Control value={myRemark} as="textarea" rows={5} required contentEditable={false}/>
+                        </Form.Group>
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="success" onClick={handleCloseRemark}>
+                    Close
                 </Button>
                 </Modal.Footer>
             </Modal>

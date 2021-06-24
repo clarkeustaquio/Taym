@@ -176,5 +176,5 @@ elif os.environ.get('DEBUG') == 'False':
 import django_heroku
 django_heroku.settings(locals())
 # FrillesCaranza
-# user: admin_taym
+# user: admin
 # password: admin_taym

@@ -18,6 +18,8 @@ class TaskHistory(models.Model):
     is_parent_approve = models.BooleanField(default=False)
     is_done_approve = models.BooleanField(default=False)
 
+    change_tab_count = models.IntegerField(default=0)
+
     def __str__(self):
         return self.user.last_name + ', ' + self.user.first_name
     

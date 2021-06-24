@@ -27,6 +27,8 @@ class CustomUser(AbstractUser):
     is_request = models.BooleanField(default=False)
     parent = models.ForeignKey("self", null=True, blank=True, on_delete=models.CASCADE)
 
+    page_visible = models.IntegerField(default=0, null=True, blank=True, editable=False)
+
 
 class Subject(models.Model):
     id = models.AutoField(primary_key=True)

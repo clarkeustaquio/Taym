@@ -1,6 +1,7 @@
 // Login and Logout
 
 export const domain = 'https://taym.herokuapp.com/'
+// export const domain = 'http://localhost:8000/'
 const remote = 'https://taym.herokuapp.com/'
 const local = 'http://localhost:8000/'
 

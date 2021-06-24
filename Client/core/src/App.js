@@ -1,5 +1,8 @@
-import React from 'react'
-import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
+import axios from 'axios';
+import { domain } from './static/api_request_urls'
+
+import React, { useEffect, useState } from 'react'
+import {BrowserRouter as Router, Switch, Route, Redirect, useHistory} from 'react-router-dom';
 
 // Helper Components
 import LoginHelper from './components/_helper/login_helper'
@@ -18,14 +21,20 @@ import FloatingButtonComponent from './components/user_account_module/Floating_B
 
 export const ResponsiveContext = React.createContext()
 
+
+
 function App() {
+  // const isVisible = usePageVisibility()
+  const token = localStorage.getItem("token")
   const [state, dispatch] = React.useReducer(ResponsiveReducer, initialState)
+  const [isVisible, setIsVisible] = useState(true)
+  const history = useHistory()
 
   const changeSize = () => {
     dispatch({type: 'CHANGE_SIZE'})
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener('resize', changeSize)
 
     if (state.width < 576) {
@@ -40,11 +49,12 @@ function App() {
 
   }, [state.isMobile, state.width])
   
-  React.useEffect(() => {
+  useEffect(() => {
     document.title = 'Time'
   })
+  
   return (
-    <React.Fragment> 
+    <React.Fragment>
       <ResponsiveContext.Provider value={state.isMobile}>
         <Router>
           <Switch>
@@ -88,7 +98,6 @@ function App() {
               <Redirect to='/login' />
             </Route>
           </Switch>
-          {/* <FloatingButtonComponent /> */}
         </Router>
       </ResponsiveContext.Provider>
     </React.Fragment>
