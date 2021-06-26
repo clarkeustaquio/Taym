@@ -3,6 +3,8 @@ from django.db import models
 # Create your models here.
 from user_account_api.models import CustomUser, Subject
 
+tab_count = 1
+
 class TaskHistory(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

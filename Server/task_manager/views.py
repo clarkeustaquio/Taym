@@ -18,6 +18,8 @@ from user_account_api.serializers import SubjectSerializer
 from dateutil import parser
 from datetime import datetime, timedelta, date
 
+from .models import tab_count
+
 # Create your views here.
 
 @api_view(['POST'])
@@ -594,11 +596,41 @@ def decline_parent(request):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def check_visibility(request):
-    user = CustomUser.objects.get(username=request.user)
+    username = request.user
 
-    if user.is_working:
-        user.page_visible += 1
+    try:
+        user = CustomUser.objects.get(username=username)
+    except CustomUser.DoesNotExist:
+        return Response({
+            'status': 'BAD'
+        }, status=status.HTTP_400_BAD_REQUEST)
+    else: 
+        if not user.is_working:
+            return Response({
+                'status': 'No current task.',
+                'is_working': user.is_working,
+                'alt_tab': user.page_visible,
+                'current_task': user.track_task
+            }, status=status.HTTP_200_OK)
 
-    user.save()
-    return Response(status=status.HTTP_200_OK)
+        if user.is_working:
+            user.page_visible += tab_count
+            user.save()
+
+            return Response({
+                'status': 'OK',
+                'is_working': user.is_working,
+                'alt_tab': user.page_visible,
+                'current_task': user.track_task
+            }, status=status.HTTP_200_OK)
+        else:
+            return Response({
+                'status': 'No current task.',
+                'is_working': user.is_working,
+                'alt_tab': user.page_visible,
+                'current_task': user.track_task
+            }, status=status.HTTP_200_OK)
+
+
+
 

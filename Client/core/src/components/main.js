@@ -1,4 +1,9 @@
-import React from 'react'
+import 
+React, { 
+    useEffect, 
+    useState
+} from 'react'
+
 import { useHistory } from 'react-router-dom'
 
 import { CircularProgress } from '@material-ui/core'
@@ -10,6 +15,12 @@ import MainComponent from './Main_Component/MainComponent'
 import { authorize_token_request_url } from '../static/api_request_urls'
 import axios from 'axios'
 import { domain } from '../static/api_request_urls'
+
+import { 
+    onListener, 
+    clearListener, 
+    type 
+} from './detect/method'
 
 const isAuthenticated = () => {
     const authenticated = localStorage.getItem('token')
@@ -52,6 +63,16 @@ function MainHelper(){
         }
     }, [isAuth, history])
 
+    // React.useEffect(() => {
+    //     window.addEventListener(type, onListener(
+    //         isVisible, setIsVisible), false)
+
+    //     return () => {
+    //         window.removeEventListener(type, clearListener(
+    //             setIsVisible), false)
+    //     }
+    // })
+
     React.useEffect(() => {
         window.addEventListener('blur', () => {
           if(token !== null){
@@ -63,7 +84,17 @@ function MainHelper(){
                 }).then(response => {
                     if(response.status === 200){
                         setIsVisible(false)
+                    }else if(response.status === 401){
+                        setIsVisible(true)
+                    }else{
+                        setIsVisible(true)
                     }
+                }).catch((error) => {
+                    if(error.error !== 'OK'){
+                        setIsVisible(true)
+                    }
+
+                    throw new Error('Server Refused. Try again later.')
                 })
               }
           }
