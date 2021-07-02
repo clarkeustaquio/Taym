@@ -20,7 +20,10 @@ function NavbarComponent({ url, handleLogout }){
                 
                 <Navbar.Collapse id='toggle-navbar'>
                     <Nav>
-                        {is_parent === 'true' ? null 
+                        {is_parent === 'true' ? <>
+                            <Nav.Link as={Link} to={`${url}/manage-subject`}>Subjects</Nav.Link>
+                            <Nav.Link as={Link} to={`${url}/student-history`}>History</Nav.Link>
+                        </> 
                         : <React.Fragment>
                             <Nav.Link as={Link} to={`${url}/subject`}>Subjects</Nav.Link>
                             <Nav.Link as={Link} to={`${url}/history`}>History</Nav.Link>

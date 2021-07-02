@@ -159,8 +159,8 @@ function ParentFormComponent({ setStatus }){
                                 <Col>
                                     <Form.Control 
                                         name="username"
-                                        type="text" 
-                                        placeholder="Username" 
+                                        type="email" 
+                                        placeholder="Email" 
                                         value={username}
                                         onChange={(event) => setUsername(event.target.value)}
                                         required

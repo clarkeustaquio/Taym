@@ -187,7 +187,7 @@ function FormComponent(){
                     </InputGroup.Prepend>
                     <FormControl
                         name="email"
-                        placeholder="Username"
+                        placeholder="Username / Email"
                         aria-label="email"
                         aria-describedby="email"
                         value={state.email} 

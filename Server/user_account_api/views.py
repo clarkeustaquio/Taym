@@ -157,7 +157,7 @@ def create_parent_account(request):
                 first_name=first_name,
                 last_name=last_name,
                 username=username,
-                # email=email,
+                email=username,
             )
             
             try:

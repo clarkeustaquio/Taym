@@ -39,13 +39,15 @@ function HomeComponent(){
 
 
     const [remark, setRemark] = useState('')
+    const [durationTime, setDurationTime] = useState('')
+    const [exceed, setExceed] = useState(false)
 
     useEffect(() => {
         document.title = 'Home'
     })
 
     useEffect(() => {
-        axios.get(`${domain}api/subject/`, {
+        axios.get(`${domain}api/limit-subject/`, {
             headers: {
                 'Authorization': 'Token ' + token
             }
@@ -84,6 +86,9 @@ function HomeComponent(){
                     setSecond(seconds)
                     setWorkName(response.data.current_task)
                 }
+
+                setDurationTime(response.data.duration)
+                setExceed(response.data.is_exceed)
                 
                 if(response.data.is_parent){
                     // setChildData(response.data.serializers)
@@ -131,6 +136,25 @@ function HomeComponent(){
                 }
             }, 1000)
 
+            var current_time = Date.parse(`01/01/2011 ${hour}:${minute}:${second}`)
+            var duration_time = Date.parse(`01/01/2011 ${durationTime}`)
+
+            if (current_time > duration_time){
+                if(!exceed){
+                    axios.post(`${domain}api/notify-exceed/`, {}, {
+                        headers: {
+                            'Authorization': 'Token ' + token
+                        }
+                    }).then(response => {
+                        if(response.status === 200){
+                            setExceed(response.data.is_exceed)
+                        }
+                    }).catch(() => {
+                        throw new Error('Server Refused. Try again later.')
+                    })
+                }
+            }
+
             return () => {
                 clearInterval(interval)
             }
@@ -159,6 +183,8 @@ function HomeComponent(){
                     setIsWorking(true)
                     setButtonValue('Stop')
                     setShow(false)
+                    setDurationTime(response.data.duration)
+                    setExceed(response.data.is_exceed)
                 }
             }).catch((error) => {
                 throw new Error('Server Refused. Try again later.')
@@ -284,7 +310,7 @@ function HomeComponent(){
             {isParent === true ? <ParentViewComponent /> :
                 <div>
                     <DashBoardComponent />
-
+                    {/* <span className="float-right mb-n5">Duration: </span> */}
                     <Card className="mt-5">
                         <Card.Body>
                         <Form noValidate validated={validated}>

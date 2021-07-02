@@ -16,5 +16,9 @@ urlpatterns = [
     path('accept-parent/', views.accept_parent, name='accept_parent'),
     path('decline-parent/', views.decline_parent, name='decline_parent'),
 
-    path('check-visibility/', views.check_visibility, name='check_visibility')
+    path('check-visibility/', views.check_visibility, name='check_visibility'),
+    path('parent-history/', views.parent_history, name='parent_history'),
+    path('parent-filter-history/', views.parent_filter_history, name='parent_filter_history'),
+    path('parent-dashboard/', views.parent_dashboard, name='parent_dashboard'),
+    path('notify-exceed/', views.notify_exceed, name='notify_exceed')
 ]

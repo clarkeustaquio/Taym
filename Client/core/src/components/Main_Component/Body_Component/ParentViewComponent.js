@@ -3,8 +3,14 @@ import React, {useEffect, useState} from 'react'
 import { Table, Button, Card, Row, Col, Modal, Form } from 'react-bootstrap'
 import { domain } from '../../../static/api_request_urls'
 
+import DailyParentBoardComponent from './DailyParentBoardComponent';
+
 function ParentViewComponent(){
     const token = localStorage.getItem('token')
+    const [subject, setSubject] = useState([])
+    const [data, setData] = useState([])
+    const [background, setBackground] = useState([])
+    const [border, setBorder] = useState([])
 
     const [childData, setChildData] = useState([])
     const [studentName, setStudentName] = useState([])
@@ -29,6 +35,36 @@ function ParentViewComponent(){
         setSubjectID(id)
     }
     
+    const backgrounds = [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+    ]
+
+    const borders = [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+    ]
+    
     const handleApprove = () => {
         axios.post(`${domain}api/approve-task/`, {
             subject_id: subjectID
@@ -41,6 +77,25 @@ function ParentViewComponent(){
                 setChildData(response.data.serializers)
                 setShow(false)
                 setIsMount(true)
+
+                setSubject(response.data.serializer)
+                setData(response.data.data)
+                
+                let bg = []
+                let br = []
+
+                response.data.serializer.map((item, index) => { 
+                    const color_length = backgrounds.length
+                    const min = 0;
+                    const max = color_length - 1;
+                    const rand = min + Math.random() * (max - min); 
+
+                    bg.push(backgrounds[Math.floor(rand)])
+                    br.push(borders[Math.floor(rand)])
+                })
+
+                setBackground(bg)
+                setBorder(br)
             }
         }).catch((error) => {
             throw new Error('Server Refused. Try again later.')
@@ -93,6 +148,16 @@ function ParentViewComponent(){
 
     return (
         <React.Fragment>
+            <DailyParentBoardComponent 
+                subject={subject}
+                setSubject={setSubject}
+                data={data}
+                setData={setData}
+                background={background}
+                setBackground={setBackground}
+                border={border}
+                setBorder={setBorder}
+            />
             {isMount === false ? null :
             <div>
                 {childData.map((child, index) => {

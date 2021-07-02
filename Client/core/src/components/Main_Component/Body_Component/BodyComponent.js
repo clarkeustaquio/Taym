@@ -8,6 +8,9 @@ import HomeComponent from './HomeComponent'
 import SubjectComponent from '../Subject_Component/SubjectComponent'
 import HistoryComponent from '../History_Component/HistoryComponent'
 import ParentRequestComponent from './ParentRequestComponent'
+import ManageSubjectComponent from './ManageSubjectComponent'
+import ParentHistoryComponent from './ParentHistoryComponent'
+
 import {
     BrowserRouter as Router,
     Switch,
@@ -41,6 +44,13 @@ function BodyComponent({ handleLogout }){
                     <ParentRequestComponent />
                 </Route>
 
+                <Route path={`${path}/manage-subject`}>
+                    <ManageSubjectComponent />
+                </Route>
+
+                <Route path={`${path}/student-history`}>
+                    <ParentHistoryComponent />
+                </Route>
 
                 <Route path={`${path}/settings`}>
                     <MyAccountComponent />

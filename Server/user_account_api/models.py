@@ -28,12 +28,15 @@ class CustomUser(AbstractUser):
     parent = models.ForeignKey("self", null=True, blank=True, on_delete=models.CASCADE)
 
     page_visible = models.IntegerField(default=0, null=True, blank=True, editable=False)
+    is_exceed = models.BooleanField(default=False)
 
 
 class Subject(models.Model):
     id = models.AutoField(primary_key=True)
     student = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     subject = models.CharField(max_length=250)
+    task_limit = models.DurationField(default=0, null=True)
+    is_set_limit = models.BooleanField(default=False)
 
     def __str__(self):
         return self.subject

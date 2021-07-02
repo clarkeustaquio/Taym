@@ -128,6 +128,7 @@ function SubjectComponent(){
                                 <tr>
                                     <th>Subject Code</th>
                                     <th>Subject Name</th>
+                                    <th>Duration</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -137,6 +138,7 @@ function SubjectComponent(){
                                         <tr key={index}>
                                             <td>{item.id}</td>
                                             <td>{item.subject}</td>
+                                            <td>{item.task_limit}</td>
                                             <td>
                                                 <div className="row">
                                                     <div className="col">

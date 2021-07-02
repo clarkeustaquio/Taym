@@ -168,10 +168,32 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
+half = 'SG.Q1zsjdrvSJa-Dm8Dy0Dbcw.7pSpsRKrQ0R'
+another = 'serR_xAflTEFPLDeIrZ3IcUDRTAQs4jk'
+
+SENDGRID_API_KEY = '{}{}'.format(half, another)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'isdepartmentneu@gmail.com'
+
+
 if os.environ.get('DEBUG') == 'True':
     DEBUG = True
 elif os.environ.get('DEBUG') == 'False':
     DEBUG = False
+
+# frillescaranza@gmail.com
+# FrillesCaranza@123
+
+# username sendgrid = frillescaranza
+# email used = isdepartmentneu@gmail.com
+# password for sendgrid TimeTracker@12345
+
+# isdepartmentneu@gmail.com  password rodenIs1130
 
 import django_heroku
 django_heroku.settings(locals())

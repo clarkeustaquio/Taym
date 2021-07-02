@@ -13,6 +13,7 @@ django-heroku = "*"
 psycopg2 = "*"
 certifi = "*"
 python-dateutil = "*"
+django-sendgrid-v5 = "*"
 
 [dev-packages]
 

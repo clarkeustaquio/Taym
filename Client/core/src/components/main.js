@@ -29,6 +29,8 @@ const isAuthenticated = () => {
 
 function MainHelper(){
     const token = localStorage.getItem('token')
+    const is_parent = localStorage.getItem('is_parent')
+
     const history = useHistory()
     const [isAuth, setAuth] = React.useState(false)
     const [isVisible, setIsVisible] = React.useState(true)
@@ -74,36 +76,38 @@ function MainHelper(){
     // })
 
     React.useEffect(() => {
-        window.addEventListener('blur', () => {
-          if(token !== null){
-              if(isVisible){
-                axios.get(`${domain}api/check-visibility/`, {
-                    headers: {
-                        'Authorization': 'Token ' + token
-                    }
-                }).then(response => {
-                    if(response.status === 200){
-                        setIsVisible(false)
-                    }else if(response.status === 401){
-                        setIsVisible(true)
-                    }else{
-                        setIsVisible(true)
-                    }
-                }).catch((error) => {
-                    if(error.error !== 'OK'){
-                        setIsVisible(true)
-                    }
-
-                    throw new Error('Server Refused. Try again later.')
-                })
-              }
-          }
-        }, false)
-    
-        return () => {
-          window.removeEventListener('blur', () => {
-            setIsVisible(true)
-          }, false);
+        if(is_parent !== 'true'){
+            if(token !== null){
+                if(isVisible){
+                    window.addEventListener('blur', () => {
+                        axios.get(`${domain}api/check-visibility/`, {
+                            headers: {
+                                'Authorization': 'Token ' + token
+                            }
+                        }).then(response => {
+                            if(response.status === 200){
+                                setIsVisible(false)
+                            }else if(response.status === 401){
+                                setIsVisible(true)
+                            }else{
+                                setIsVisible(true)
+                            }
+                        }).catch((error) => {
+                            if(error.error !== 'OK'){
+                                setIsVisible(true)
+                            }
+        
+                            throw new Error('Server Refused. Try again later.')
+                        })
+                    }, false)
+                }
+            }
+            
+            return () => {
+                window.removeEventListener('blur', () => {
+                    setIsVisible(true)
+                }, false);
+            }
         }
       }, [])
 
