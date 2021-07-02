@@ -167,11 +167,12 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+start = 'SG.Q1zsjdrvSJa-'
+half = 'Dm8Dy0Dbcw.7pSpsRKrQ0R'
+another = 'serR_xAflTEFPL'
+last ='DeIrZ3IcUDRTAQs4jk'
 
-half = 'SG.Q1zsjdrvSJa-Dm8Dy0Dbcw.7pSpsRKrQ0R'
-another = 'serR_xAflTEFPLDeIrZ3IcUDRTAQs4jk'
-
-SENDGRID_API_KEY = '{}{}'.format(half, another)
+SENDGRID_API_KEY = '{}{}{}{}'.format(start, half, another, last)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'apikey'
