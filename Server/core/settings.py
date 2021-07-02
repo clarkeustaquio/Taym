@@ -135,10 +135,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-EMAIL_HOST = 'smtp.mailtrap.io'
-EMAIL_HOST_USER = 'd7f53ddf8061b4'
-EMAIL_HOST_PASSWORD = '089f8bb6ceab1a'
-EMAIL_PORT = '2525'
+# EMAIL_HOST = 'smtp.mailtrap.io'
+# EMAIL_HOST_USER = 'd7f53ddf8061b4'
+# EMAIL_HOST_PASSWORD = '089f8bb6ceab1a'
+# EMAIL_PORT = '2525'
 
 # CSRF_COOKIE_SECURE = True
 # CSRF_USE_SESSIONS = True
